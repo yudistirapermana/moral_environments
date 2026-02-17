@@ -9,8 +9,8 @@ SESSION_CONFIGS = [
     #         'risk_task',
     #         'ambiguity_task',
     #         'company_task',
-    #         'payment_page',
     #         'moral_survey',
+    #         'payment_page',
     #         'survey_demographic'
     #     ],
     #     num_demo_participants=1,
@@ -22,7 +22,10 @@ SESSION_CONFIGS = [
             'instruction',
             'risk_task',
             'ambiguity_task',
-            # 'company_task',
+            'company_task',
+            'moral_survey',
+            'payment_page',
+            'survey_player'
         ],
         num_demo_participants=1,
     ),
@@ -40,7 +43,7 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
+    real_world_currency_per_point=1.00, participation_fee=20000.00, doc=""
 )
 
 PARTICIPANT_FIELDS = []
@@ -51,7 +54,7 @@ SESSION_FIELDS = []
 LANGUAGE_CODE = 'en'
 
 # e.g. EUR, GBP, CNY, JPY
-REAL_WORLD_CURRENCY_CODE = 'USD'
+REAL_WORLD_CURRENCY_CODE = 'Rp'
 USE_POINTS = True
 
 ADMIN_USERNAME = 'admin'
