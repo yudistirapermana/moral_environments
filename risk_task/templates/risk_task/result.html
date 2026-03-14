@@ -7,10 +7,34 @@
 
 {% block content %}
     <div class="card">
-        <div class="card-header">
-            <h3 class="m-0">Hasil Risk Task - Ronde {{ player.round_number }}</h3>
+        <div class="card-header d-flex flex-row justify-content-between align-items-center">
+            <h3 class="m-0">Hasil Risk Task</h3>
+            <h3 class="m-0">
+                <span class="badge text-bg-primary">Ronde {{ player.round_number }} dari 5</span>
+            </h3>
         </div>
         <div class="card-body">
+            <div class="alert alert-info">
+                <strong>Implementasi probabilitas:</strong> Anda mengundi angka 1-100 dan keluar angka
+                <strong>{{ player.angka_keluar }}</strong>.
+            </div>
+
+            {% if outcome_ranges %}
+                <div class="mb-3">
+                    <p>Berdasarkan {{ player.prospek_terpilih }}:</p>
+                    <ul>
+                        {% for r in outcome_ranges %}
+                            <li>
+                                Angka {{ r.start }}-{{ r.end }} → Payoff {{ r.payoff }} token
+                                {% if player.angka_keluar >= r.start and player.angka_keluar <= r.end %}
+                                    <span class="badge text-bg-success">Terpilih</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -22,7 +46,7 @@
                         <tr>
                             <td>{{ player.angka_keluar }}</td>
                             <td>{{ player.prospek_terpilih }}</td>
-                            <td>{{ player.hasil_token }} token</td>
+                            <td><strong>{{ player.hasil_token }} token</strong></td>
                         </tr>
                     </tbody>
                 </table>

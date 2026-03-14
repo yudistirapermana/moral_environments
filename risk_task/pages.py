@@ -1,5 +1,6 @@
 from .models import *
 import random
+import json
 
 
 class game(Page):
@@ -10,32 +11,89 @@ class game(Page):
         if not values.get('prospek_terpilih'):
             return "Silakan pilih salah satu prospek."
 
+    def vars_for_template(self):
+        round_data = Constants.rounds_data[self.round_number - 1]
+
+        # Format outcomes untuk display di template
+        a_display = []
+        for payoff, prob in round_data['a_outcomes']:
+            a_display.append(dict(
+                payoff=payoff,
+                prob=prob,
+                prob_pct=int(prob * 100),
+            ))
+
+        b_display = []
+        for payoff, prob in round_data['b_outcomes']:
+            b_display.append(dict(
+                payoff=payoff,
+                prob=prob,
+                prob_pct=int(prob * 100),
+            ))
+
+        # Data untuk Chart.js (JSON)
+        a_chart = dict(
+            labels=[f"{o['payoff']} token ({o['prob_pct']}%)" for o in a_display],
+            data=[o['prob_pct'] for o in a_display],
+        )
+        b_chart = dict(
+            labels=[f"{o['payoff']} token ({o['prob_pct']}%)" for o in b_display],
+            data=[o['prob_pct'] for o in b_display],
+        )
+
+        return dict(
+            a_outcomes=a_display,
+            b_outcomes=b_display,
+            a_chart_json=json.dumps(a_chart),
+            b_chart_json=json.dumps(b_chart),
+        )
+
     def before_next_page(self):
+        round_data = Constants.rounds_data[self.round_number - 1]
+
         # Undian angka 1-100
         self.player.angka_keluar = random.randint(1, 100)
 
+        # Tentukan outcomes berdasarkan prospek yang dipilih
         if self.player.prospek_terpilih == 'prospek-A':
-            if 1 <= self.player.angka_keluar <= 5:
-                self.player.hasil_token = 200
-            elif 6 <= self.player.angka_keluar <= 95:
-                self.player.hasil_token = 150
-            else:
-                self.player.hasil_token = 0
+            outcomes = round_data['a_outcomes']
+        else:
+            outcomes = round_data['b_outcomes']
 
-        if self.player.prospek_terpilih == 'prospek-B':
-            if 1 <= self.player.angka_keluar <= 5:
-                self.player.hasil_token = 180
-            elif 6 <= self.player.angka_keluar <= 95:
-                self.player.hasil_token = 150
-            else:
-                self.player.hasil_token = 20
-
-        # Set payoff oTree
-        # self.player.payoff = self.player.hasil_token
+        # Hitung hasil berdasarkan angka yang keluar
+        cumulative = 0
+        for payoff, prob in outcomes:
+            cumulative += int(prob * 100)
+            if self.player.angka_keluar <= cumulative:
+                self.player.hasil_token = payoff
+                break
 
 
 class result(Page):
-    pass
+    def vars_for_template(self):
+        round_data = Constants.rounds_data[self.round_number - 1]
+
+        # Buat penjelasan range angka untuk setiap outcome
+        if self.player.prospek_terpilih == 'prospek-A':
+            outcomes = round_data['a_outcomes']
+        else:
+            outcomes = round_data['b_outcomes']
+
+        ranges = []
+        start = 1
+        for payoff, prob in outcomes:
+            end = start + int(prob * 100) - 1
+            if end >= start:
+                ranges.append(dict(
+                    start=start,
+                    end=end,
+                    payoff=payoff,
+                ))
+            start = end + 1
+
+        return dict(
+            outcome_ranges=ranges,
+        )
 
 
 page_sequence = [
