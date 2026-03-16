@@ -21,8 +21,8 @@ class company_task_example(Page):
     pass
 
 
-# class practice_session(Page):
-#     pass
+class practice_session(Page):
+    pass
 
 
 page_sequence = [
@@ -31,5 +31,5 @@ page_sequence = [
     risk_task_example,
     ambiguity_task_example,
     company_task_example,
-    # practice_session
+    practice_session,
 ]

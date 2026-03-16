@@ -6,6 +6,7 @@ SESSION_CONFIGS = [
         name='moral_env_by_return',
         app_sequence=[
             'instruction',
+            'practice',
             'risk_task',
             'ambiguity_task',
             'company_task',
@@ -21,6 +22,7 @@ SESSION_CONFIGS = [
         name='moral_env_by_capitalisation',
         app_sequence=[
             'instruction',
+            'practice',
             'risk_task',
             'ambiguity_task',
             'company_task',
