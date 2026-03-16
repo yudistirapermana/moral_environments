@@ -1,125 +1,153 @@
 {% extends "global/Page.html" %}
 {% load otree static %}
 
+{% block style %}
+    <link rel="stylesheet" href="{% static 'global/company_task.css' %}">
+{% endblock %}
+
 {% block title %}
     <title>Risk Task - Moral Environment</title>
 {% endblock %}
 
 {% block content %}
-    <div class="card">
-        <div class="card-header d-flex flex-row justify-content-between align-items-center">
-            <h3 class="m-0">Risk Task</h3>
-            <h3 class="m-0">
-                <span class="badge text-bg-primary">Ronde {{ player.round_number }} dari 5</span>
-            </h3>
-        </div>
-        <div class="card-body">
-            <div class="alert alert-success text-center">
-                <h4 class="m-0">Silahkan pilih salah satu dari 2 prospek berisiko</h4>
-            </div>
-            <div class="row row-cols-1 row-cols-md-2 g-4">
-                <!-- Prospek A -->
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header text-bg-success">
-                            <div class="form-check h4">
-                                <input class="form-check-input"
-                                       type="radio" name="prospek_terpilih" value="prospek-A" required>
-                                <label class="form-check-label">
-                                    Prospek A
-                                </label>
+    <!-- Header -->
+    <div class="ct-header d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0">Risk Task</h3>
+        <span class="badge text-bg-primary fs-6">Ronde {{ player.round_number }} dari 5</span>
+    </div>
+
+    <!-- Instruksi -->
+    <div class="text-center mb-3">
+        <h5 class="text-success fw-bold m-0">
+            <i class="fa-solid fa-hand-pointer me-1"></i>
+            Pilih salah satu dari 2 prospek berisiko
+        </h5>
+    </div>
+
+    <!-- Prospek Cards -->
+    <div class="row g-4 mb-4">
+        <!-- Prospek A -->
+        <div class="col-md-6">
+            <label class="ct-prospect-card w-100 h-100" id="cardA">
+                <input class="visually-hidden" type="radio"
+                       name="prospek_terpilih" value="prospek-A" required>
+                <div class="ct-prospect-header">
+                    <span class="ct-prospect-radio"></span>
+                    <span class="ct-prospect-title">Prospek A</span>
+                </div>
+                <div class="ct-prospect-body">
+                    <div class="ct-chart-wrap"><canvas id="risk-a"></canvas></div>
+                    <div class="ct-outcomes">
+                        {% for o in a_outcomes %}
+                            <div class="ct-outcome-row">
+                                {% if o.payoff > 0 %}
+                                    <span class="ct-outcome-dot ct-dot-green"></span>
+                                {% else %}
+                                    <span class="ct-outcome-dot ct-dot-red"></span>
+                                {% endif %}
+                                Payoff <strong>{{ o.payoff }} token</strong>
+                                &mdash; prob. <strong>{{ o.prob_pct }}%</strong>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-4"><canvas id="risk-a"></canvas></div>
-                            <h6 class="card-title text-center">
-                                Anda akan mendapatkan salah satu payoff yang tersedia berdasarkan probabilitas sebagai
-                                berikut:
-                            </h6>
-                            <ul class="list-group list-group-flush text-center">
-                                {% for o in a_outcomes %}
-                                    <li class="list-group-item">
-                                        Payoff {{ o.payoff }} token dengan probabilitas {{ o.prob_pct }}%
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-                <!-- Prospek B -->
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header text-bg-success">
-                            <div class="form-check h4">
-                                <input class="form-check-input"
-                                       type="radio" name="prospek_terpilih" value="prospek-B" required>
-                                <label class="form-check-label">
-                                    Prospek B
-                                </label>
+            </label>
+        </div>
+
+        <!-- Prospek B -->
+        <div class="col-md-6">
+            <label class="ct-prospect-card w-100 h-100" id="cardB">
+                <input class="visually-hidden" type="radio"
+                       name="prospek_terpilih" value="prospek-B" required>
+                <div class="ct-prospect-header">
+                    <span class="ct-prospect-radio"></span>
+                    <span class="ct-prospect-title">Prospek B</span>
+                </div>
+                <div class="ct-prospect-body">
+                    <div class="ct-chart-wrap"><canvas id="risk-b"></canvas></div>
+                    <div class="ct-outcomes">
+                        {% for o in b_outcomes %}
+                            <div class="ct-outcome-row">
+                                {% if o.payoff > 0 %}
+                                    <span class="ct-outcome-dot ct-dot-green"></span>
+                                {% else %}
+                                    <span class="ct-outcome-dot ct-dot-red"></span>
+                                {% endif %}
+                                Payoff <strong>{{ o.payoff }} token</strong>
+                                &mdash; prob. <strong>{{ o.prob_pct }}%</strong>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-4"><canvas id="risk-b"></canvas></div>
-                            <h6 class="card-title text-center">
-                                Anda akan mendapatkan salah satu payoff yang tersedia berdasarkan probabilitas sebagai
-                                berikut:
-                            </h6>
-                            <ul class="list-group list-group-flush text-center">
-                                {% for o in b_outcomes %}
-                                    <li class="list-group-item">
-                                        Payoff {{ o.payoff }} token dengan probabilitas {{ o.prob_pct }}%
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-            </div>
+            </label>
         </div>
-        <div class="card-footer">
-            <button type="submit" class="otree-btn btn btn-success">
-                <i class="fa-solid fa-circle-check me-1"></i>
-                <span>Pilih Prospek terpilih</span>
-            </button>
-        </div>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="text-center">
+        <button type="submit" class="otree-btn btn btn-success btn-lg ct-cta-btn">
+            <i class="fa-solid fa-circle-check me-2"></i>
+            Konfirmasi Pilihan
+        </button>
     </div>
 {% endblock %}
 
 {% block scripts %}
     <script>
-        const chartColors = [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
-            'rgb(255, 205, 86)',
-        ];
+        // Clickable cards
+        document.querySelectorAll('.ct-prospect-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.ct-prospect-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                const radio = card.querySelector('input[type="radio"]');
+                if (radio) radio.checked = true;
+            });
+        });
 
+        // Charts with datalabels
         const aChart = {{ a_chart_json|safe }};
         const bChart = {{ b_chart_json|safe }};
+        const chartColors = ['#28a745', '#dc3545', '#ffc107'];
+
+        const datalabelsPlugin = {
+            id: 'datalabels',
+            afterDraw(chart) {
+                const ctx = chart.ctx;
+                chart.data.datasets.forEach((ds, di) => {
+                    chart.getDatasetMeta(di).data.forEach((arc, i) => {
+                        const val = ds.data[i];
+                        if (val < 5) return;
+                        const pos = arc.tooltipPosition();
+                        ctx.save();
+                        ctx.fillStyle = '#fff';
+                        ctx.font = 'bold 14px sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(val + '%', pos.x, pos.y);
+                        ctx.restore();
+                    });
+                });
+            }
+        };
 
         new Chart(document.getElementById('risk-a'), {
             type: 'pie',
             data: {
                 labels: aChart.labels,
-                datasets: [{
-                    label: 'Prospek A',
-                    data: aChart.data,
-                    backgroundColor: chartColors.slice(0, aChart.data.length),
-                    hoverOffset: 4
-                }]
+                datasets: [{ data: aChart.data, backgroundColor: chartColors.slice(0, aChart.data.length), borderWidth: 2, borderColor: '#fff' }]
             },
+            options: { responsive: true, plugins: { legend: { display: false }, tooltip: { enabled: true } } },
+            plugins: [datalabelsPlugin]
         });
 
         new Chart(document.getElementById('risk-b'), {
             type: 'pie',
             data: {
                 labels: bChart.labels,
-                datasets: [{
-                    label: 'Prospek B',
-                    data: bChart.data,
-                    backgroundColor: chartColors.slice(0, bChart.data.length),
-                    hoverOffset: 4
-                }]
+                datasets: [{ data: bChart.data, backgroundColor: chartColors.slice(0, bChart.data.length), borderWidth: 2, borderColor: '#fff' }]
             },
+            options: { responsive: true, plugins: { legend: { display: false }, tooltip: { enabled: true } } },
+            plugins: [datalabelsPlugin]
         });
     </script>
 {% endblock %}

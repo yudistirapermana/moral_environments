@@ -1,0 +1,313 @@
+/* ============================================
+   Company Task - Custom Styles
+   ============================================ */
+
+/* --- Header --- */
+.ct-header {
+    padding: 12px 0;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 4px;
+}
+
+/* --- Context Box (narasi + metrics) --- */
+.ct-context-box {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 16px 18px;
+}
+.ct-context-box p {
+    font-size: 0.92rem;
+    color: #495057;
+}
+
+/* --- Metric Cards --- */
+.ct-metric-card {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 16px 12px;
+    text-align: center;
+    transition: box-shadow 0.2s;
+}
+.ct-metric-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.ct-metric-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+.ct-metric-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #212529;
+    line-height: 1.2;
+}
+.ct-metric-unit {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+.ct-metric-highlight {
+    background: #e8f5e9;
+    border-color: #28a745;
+}
+.ct-metric-highlight .ct-metric-value {
+    color: #28a745;
+}
+
+/* --- Damage Banner (orange/warning, bukan merah) --- */
+.ct-damage-banner {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+    border: 1px solid #ffc107;
+    border-left: 5px solid #e0a800;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.92rem;
+    color: #664d03;
+}
+.ct-damage-icon {
+    color: #e0a800;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+/* --- Prospect Cards (clickable) --- */
+.ct-prospect-card {
+    display: block;
+    border: 2px solid #dee2e6;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: #fff;
+    overflow: hidden;
+}
+.ct-prospect-card:hover {
+    border-color: #28a745;
+    box-shadow: 0 4px 16px rgba(40, 167, 69, 0.15);
+    transform: translateY(-2px);
+}
+.ct-prospect-card.selected {
+    border-color: #28a745;
+    border-width: 3px;
+    box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.18), 0 6px 20px rgba(40, 167, 69, 0.12);
+}
+.ct-prospect-card.selected .ct-prospect-header {
+    background: #28a745;
+    color: #fff;
+}
+.ct-prospect-card.selected .ct-prospect-radio {
+    background: #fff;
+    border-color: #fff;
+    box-shadow: inset 0 0 0 5px #28a745;
+}
+
+/* Prospect header */
+.ct-prospect-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    background: #e9ecef;
+    transition: background 0.25s, color 0.25s;
+}
+.ct-prospect-radio {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #6c757d;
+    background: #fff;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+.ct-prospect-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* Prospect body */
+.ct-prospect-body {
+    padding: 18px;
+}
+
+/* Chart wrapper */
+.ct-chart-wrap {
+    max-width: 200px;
+    margin: 0 auto 16px;
+}
+
+/* Outcomes list */
+.ct-outcomes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.ct-outcome-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+.ct-outcome-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.ct-dot-green { background: #28a745; }
+.ct-dot-red   { background: #dc3545; }
+
+/* --- Ambiguity Bar Visual --- */
+.ct-amb-visual {
+    padding: 4px 0;
+}
+.ct-amb-bar-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 4px;
+}
+.ct-amb-bar {
+    display: flex;
+    height: 32px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+    background: #e9ecef;
+}
+.ct-amb-bar-known {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.82rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    transition: width 0.5s ease;
+}
+.ct-amb-bar-unknown {
+    flex: 1;
+    background: repeating-linear-gradient(
+        -45deg,
+        #dee2e6,
+        #dee2e6 5px,
+        #e9ecef 5px,
+        #e9ecef 10px
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #6c757d;
+    font-size: 1rem;
+}
+.ct-amb-bar-unknown-full {
+    flex: 1;
+    background: repeating-linear-gradient(
+        -45deg,
+        #f8d7da,
+        #f8d7da 5px,
+        #f5c2c7 5px,
+        #f5c2c7 10px
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #842029;
+    font-size: 0.82rem;
+}
+
+/* --- Contribution Card --- */
+.ct-contribution-card {
+    border: 1px solid #0d6efd;
+    border-radius: 14px;
+    overflow: hidden;
+}
+.ct-contribution-header {
+    background: linear-gradient(135deg, #0d6efd, #0a58ca);
+    color: #fff;
+    padding: 12px 18px;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+.ct-contribution-body {
+    padding: 20px;
+    background: #f8f9ff;
+}
+
+/* Slider group */
+.ct-slider-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.ct-slider {
+    flex: 1;
+}
+.ct-slider-input-wrap {
+    display: flex;
+    align-items: center;
+    border: 2px solid #0d6efd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    min-width: 110px;
+}
+.ct-slider-input {
+    border: none !important;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding: 6px 4px;
+    width: 70px;
+    box-shadow: none !important;
+}
+.ct-slider-input:focus {
+    outline: none;
+}
+.ct-slider-pct {
+    background: #0d6efd;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 8px 14px;
+}
+
+/* Slider ticks */
+.ct-slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0 0;
+    font-size: 0.72rem;
+    color: #adb5bd;
+}
+
+/* --- CTA Button (standalone) --- */
+.ct-cta-btn {
+    padding: 14px 48px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(40, 167, 69, 0.3);
+    transition: all 0.2s;
+}
+.ct-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .ct-metric-value { font-size: 1.2rem; }
+    .ct-slider-group { flex-direction: column; gap: 10px; }
+    .ct-slider-input-wrap { min-width: 100%; justify-content: center; }
+    .ct-cta-btn { width: 100%; }
+}

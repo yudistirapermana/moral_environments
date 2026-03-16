@@ -4,38 +4,33 @@ import random
 
 class info_all_round(Page):
     def vars_for_template(self):
-        # Uang kehadiran (ambil dari session config)
         show_up_fee = self.session.config.get('participation_fee', 0)
+        treatment = self.session.config.get('treatment', 'by_return')
 
         # RISK TASK
         risk_players = []
-
         for p in self.participant.get_players():
             if p.__module__.startswith('risk_task'):
                 risk_players.append(p)
 
         risk_data = []
         total_risk = 0
-
         for p in risk_players:
             risk_data.append({
                 'round_number': p.round_number,
                 'choice': 'Prospek A' if p.prospek_terpilih == 'prospek-A' else 'Prospek B',
                 'payoff': p.hasil_token,
             })
-
             total_risk += p.hasil_token
 
         # AMBIGUITY TASK
         ambiguity_players = []
-
         for p in self.participant.get_players():
             if p.__module__.startswith('ambiguity_task'):
                 ambiguity_players.append(p)
 
         ambiguity_data = []
         total_ambiguity = 0
-
         for p in ambiguity_players:
             ambiguity_data.append({
                 'round_number': p.round_number,
@@ -44,19 +39,38 @@ class info_all_round(Page):
                 'drawn_color': p.bola_keluar,
                 'payoff': p.hasil_token,
             })
-
             total_ambiguity += p.hasil_token
+
+        # COMPANY TASK
+        company_players = []
+        for p in self.participant.get_players():
+            if p.__module__.startswith('company_task'):
+                company_players.append(p)
+
+        company_data = []
+        total_company = 0
+        for p in company_players:
+            company_data.append({
+                'round_number': p.round_number,
+                'choice': 'Prospek A' if p.prospek_terpilih == 'prospek-A' else 'Prospek B',
+                'bencana': p.bencana_terjadi,
+                'return_token': p.return_token,
+                'kontribusi_persen': p.kontribusi_persen,
+                'kontribusi_token': p.kontribusi_token,
+                'payoff': p.hasil_token,
+            })
+            total_company += p.hasil_token
 
         return dict(
             ambiguity_data=sorted(ambiguity_data, key=lambda x: x['round_number']),
             risk_data=sorted(risk_data, key=lambda x: x['round_number']),
+            company_data=sorted(company_data, key=lambda x: x['round_number']),
             total_ambiguity=total_ambiguity,
             total_risk=total_risk,
+            total_company=total_company,
             show_up_fee=show_up_fee,
-            # final_payment=final_payment
+            treatment=treatment,
         )
-
-        # COMPANY TASK
 
 
 class get_payment(Page):

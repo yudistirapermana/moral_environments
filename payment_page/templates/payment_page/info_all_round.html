@@ -87,12 +87,48 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <h5 class="m-0">Company Task</h5>
+                    <h5 class="m-0">Company Task
+                        {% if treatment == 'by_return' %}
+                            <span class="badge text-bg-info">By Return</span>
+                        {% else %}
+                            <span class="badge text-bg-warning">By Capitalisation</span>
+                        {% endif %}
+                    </h5>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
-                            <thead></thead>
+                            <thead>
+                                <th>Ronde</th>
+                                <th>Prospek</th>
+                                <th>Bencana</th>
+                                <th>Return</th>
+                                <th>Kontribusi</th>
+                                <th>Hasil</th>
+                            </thead>
+                            <tbody>
+                                {% for row in company_data %}
+                                <tr>
+                                    <td>Ronde {{ row.round_number }}</td>
+                                    <td>{{ row.choice }}</td>
+                                    <td>
+                                        {% if row.bencana %}
+                                            <span class="badge text-bg-danger">Ya</span>
+                                        {% else %}
+                                            <span class="badge text-bg-success">Tidak</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ row.return_token }}</td>
+                                    <td>{{ row.kontribusi_persen }}% ({{ row.kontribusi_token }})</td>
+                                    <td><strong>{{ row.payoff }}</strong></td>
+                                </tr>
+                                {% endfor %}
+
+                                <tr class="fw-bold">
+                                    <td colspan="5">Total Token Company Task</td>
+                                    <td>{{ total_company }} Token</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

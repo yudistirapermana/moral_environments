@@ -3,6 +3,7 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'global/ambiguity_task.css' %}">
+    <link rel="stylesheet" href="{% static 'global/company_task.css' %}">
 {% endblock %}
 
 {% block title %}
@@ -10,130 +11,136 @@
 {% endblock %}
 
 {% block content %}
-    <div class="card">
-        <div class="card-header d-flex flex-row justify-content-between align-items-center">
-            <h3 class="m-0">Ambiguity Task</h3>
-            <h3 class="m-0">
-                <span class="badge text-bg-primary">Ronde {{ player.round_number }} dari 5</span>
-            </h3>
-        </div>
-        <div class="card-body">
-            <!-- Informasi situasi -->
-            <div class="alert alert-info text-center">
-                <h5 class="m-0">{{ info_text }}</h5>
-            </div>
+    <!-- Header -->
+    <div class="ct-header d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0">Ambiguity Task</h3>
+        <span class="badge text-bg-primary fs-6">Ronde {{ player.round_number }} dari 5</span>
+    </div>
 
-            <!-- Visualisasi kotak bola -->
-            <div class="ball-box-container">
-                <div class="ball-box" id="ballBox"></div>
-            </div>
+    <!-- Informasi situasi -->
+    <div class="ct-damage-banner mb-3" style="border-left-color: #0d6efd; border-color: #0d6efd; background: linear-gradient(135deg, #e7f1ff, #cfe2ff); color: #084298;">
+        {{ info_text }}
+    </div>
 
-            <!-- Legenda warna -->
-            <div class="text-center mb-3" id="ballLegend"></div>
+    <!-- Visualisasi kotak bola -->
+    <div class="ball-box-container">
+        <div class="ball-box" id="ballBox"></div>
+    </div>
 
-            <!-- Instruksi pilihan -->
-            <div class="alert alert-success text-center">
-                <h5 class="m-0">
-                    {% if choice_type == 'single' %}
-                        Pilih satu warna bola. Jika bola dengan warna pilihan Anda yang keluar,
-                        Anda mendapatkan <strong>3.000 token</strong>.
-                    {% else %}
-                        Pilih salah satu kombinasi warna. Jika bola dengan warna dalam kombinasi
-                        pilihan Anda yang keluar, Anda mendapatkan <strong>3.000 token</strong>.
-                    {% endif %}
-                </h5>
-            </div>
+    <!-- Legenda warna -->
+    <div class="text-center mb-3" id="ballLegend"></div>
 
+    <!-- Instruksi pilihan -->
+    <div class="text-center mb-3">
+        <h5 class="text-success fw-bold m-0">
+            <i class="fa-solid fa-hand-pointer me-1"></i>
             {% if choice_type == 'single' %}
-                <!-- Pilih satu warna: 3 radio button -->
-                <div class="row row-cols-1 row-cols-md-3 g-3">
-                    <div class="col">
-                        <label class="card choice-card w-100">
-                            <div class="card-body text-center">
-                                <input class="form-check-input visually-hidden"
-                                       type="radio" name="prospek_terpilih" value="Merah" required>
-                                <div class="choice-ball red"></div>
-                                <h5 class="mt-2 mb-0">Merah</h5>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="col">
-                        <label class="card choice-card w-100">
-                            <div class="card-body text-center">
-                                <input class="form-check-input visually-hidden"
-                                       type="radio" name="prospek_terpilih" value="Kuning" required>
-                                <div class="choice-ball yellow"></div>
-                                <h5 class="mt-2 mb-0">Kuning</h5>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="col">
-                        <label class="card choice-card w-100">
-                            <div class="card-body text-center">
-                                <input class="form-check-input visually-hidden"
-                                       type="radio" name="prospek_terpilih" value="Biru" required>
-                                <div class="choice-ball blue"></div>
-                                <h5 class="mt-2 mb-0">Biru</h5>
-                            </div>
-                        </label>
-                    </div>
-                </div>
+                Pilih satu warna bola. Jika bola pilihan Anda yang keluar,
+                Anda mendapatkan <strong>3.000 token</strong>.
             {% else %}
-                <!-- Pilih kombinasi: 2 radio button -->
-                <div class="row row-cols-1 row-cols-md-2 g-4">
-                    <div class="col">
-                        <label class="card choice-card w-100">
-                            <div class="card-header text-bg-success">
-                                <div class="form-check h4 m-0">
-                                    <input class="form-check-input"
-                                           type="radio" name="prospek_terpilih" value="merah-kuning" required>
-                                    <span class="form-check-label">Merah atau Kuning</span>
-                                </div>
-                            </div>
-                            <div class="card-body text-center">
-                                <div class="d-flex justify-content-center gap-2 mb-2">
-                                    <div class="choice-ball-sm red"></div>
-                                    <div class="choice-ball-sm yellow"></div>
-                                </div>
-                                <h6 class="card-title">
-                                    Anda mendapatkan <strong>3.000 token</strong> jika bola
-                                    <strong class="text-danger">Merah</strong> atau
-                                    <strong class="text-warning">Kuning</strong> yang keluar.
-                                </h6>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="col">
-                        <label class="card choice-card w-100">
-                            <div class="card-header text-bg-success">
-                                <div class="form-check h4 m-0">
-                                    <input class="form-check-input"
-                                           type="radio" name="prospek_terpilih" value="biru-kuning" required>
-                                    <span class="form-check-label">Biru atau Kuning</span>
-                                </div>
-                            </div>
-                            <div class="card-body text-center">
-                                <div class="d-flex justify-content-center gap-2 mb-2">
-                                    <div class="choice-ball-sm blue"></div>
-                                    <div class="choice-ball-sm yellow"></div>
-                                </div>
-                                <h6 class="card-title">
-                                    Anda mendapatkan <strong>3.000 token</strong> jika bola
-                                    <strong class="text-primary">Biru</strong> atau
-                                    <strong class="text-warning">Kuning</strong> yang keluar.
-                                </h6>
-                            </div>
-                        </label>
-                    </div>
-                </div>
+                Pilih salah satu kombinasi warna. Jika bola dalam kombinasi
+                pilihan Anda yang keluar, Anda mendapatkan <strong>3.000 token</strong>.
             {% endif %}
+        </h5>
+    </div>
+
+    {% if choice_type == 'single' %}
+        <!-- Pilih satu warna: 3 cards -->
+        <div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
+            <div class="col">
+                <label class="ct-prospect-card w-100">
+                    <input class="visually-hidden" type="radio"
+                           name="prospek_terpilih" value="Merah" required>
+                    <div class="ct-prospect-header" style="justify-content: center;">
+                        <span class="ct-prospect-radio"></span>
+                        <span class="ct-prospect-title">Merah</span>
+                    </div>
+                    <div class="ct-prospect-body text-center">
+                        <div class="choice-ball red mx-auto"></div>
+                    </div>
+                </label>
+            </div>
+            <div class="col">
+                <label class="ct-prospect-card w-100">
+                    <input class="visually-hidden" type="radio"
+                           name="prospek_terpilih" value="Kuning" required>
+                    <div class="ct-prospect-header" style="justify-content: center;">
+                        <span class="ct-prospect-radio"></span>
+                        <span class="ct-prospect-title">Kuning</span>
+                    </div>
+                    <div class="ct-prospect-body text-center">
+                        <div class="choice-ball yellow mx-auto"></div>
+                    </div>
+                </label>
+            </div>
+            <div class="col">
+                <label class="ct-prospect-card w-100">
+                    <input class="visually-hidden" type="radio"
+                           name="prospek_terpilih" value="Biru" required>
+                    <div class="ct-prospect-header" style="justify-content: center;">
+                        <span class="ct-prospect-radio"></span>
+                        <span class="ct-prospect-title">Biru</span>
+                    </div>
+                    <div class="ct-prospect-body text-center">
+                        <div class="choice-ball blue mx-auto"></div>
+                    </div>
+                </label>
+            </div>
         </div>
-        <div class="card-footer">
-            <button type="submit" class="otree-btn btn btn-success">
-                <i class="fa-solid fa-circle-check me-1"></i>
-                <span>Konfirmasi Pilihan</span>
-            </button>
+    {% else %}
+        <!-- Pilih kombinasi: 2 cards -->
+        <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+            <div class="col">
+                <label class="ct-prospect-card w-100">
+                    <input class="visually-hidden" type="radio"
+                           name="prospek_terpilih" value="merah-kuning" required>
+                    <div class="ct-prospect-header">
+                        <span class="ct-prospect-radio"></span>
+                        <span class="ct-prospect-title">Merah atau Kuning</span>
+                    </div>
+                    <div class="ct-prospect-body text-center">
+                        <div class="d-flex justify-content-center gap-2 mb-2">
+                            <div class="choice-ball-sm red"></div>
+                            <div class="choice-ball-sm yellow"></div>
+                        </div>
+                        <p class="mb-0">
+                            Anda mendapatkan <strong>3.000 token</strong> jika bola
+                            <strong class="text-danger">Merah</strong> atau
+                            <strong class="text-warning">Kuning</strong> yang keluar.
+                        </p>
+                    </div>
+                </label>
+            </div>
+            <div class="col">
+                <label class="ct-prospect-card w-100">
+                    <input class="visually-hidden" type="radio"
+                           name="prospek_terpilih" value="biru-kuning" required>
+                    <div class="ct-prospect-header">
+                        <span class="ct-prospect-radio"></span>
+                        <span class="ct-prospect-title">Biru atau Kuning</span>
+                    </div>
+                    <div class="ct-prospect-body text-center">
+                        <div class="d-flex justify-content-center gap-2 mb-2">
+                            <div class="choice-ball-sm blue"></div>
+                            <div class="choice-ball-sm yellow"></div>
+                        </div>
+                        <p class="mb-0">
+                            Anda mendapatkan <strong>3.000 token</strong> jika bola
+                            <strong class="text-primary">Biru</strong> atau
+                            <strong class="text-warning">Kuning</strong> yang keluar.
+                        </p>
+                    </div>
+                </label>
+            </div>
         </div>
+    {% endif %}
+
+    <!-- CTA Button -->
+    <div class="text-center">
+        <button type="submit" class="otree-btn btn btn-success btn-lg ct-cta-btn">
+            <i class="fa-solid fa-circle-check me-2"></i>
+            Konfirmasi Pilihan
+        </button>
     </div>
 {% endblock %}
 
@@ -151,20 +158,17 @@
         const usableSize = boxSize - padding * 2;
         const spacing = usableSize / gridSize;
 
-        // Bangun array warna bola
         const balls = [];
         for (let i = 0; i < displayBalls.red; i++) balls.push('red');
         for (let i = 0; i < displayBalls.yellow; i++) balls.push('yellow');
         for (let i = 0; i < displayBalls.blue; i++) balls.push('blue');
         for (let i = 0; i < displayBalls.grey; i++) balls.push('grey');
 
-        // Acak urutan bola
         for (let i = balls.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [balls[i], balls[j]] = [balls[j], balls[i]];
         }
 
-        // Tempatkan bola dalam grid dengan sedikit jitter
         balls.forEach((color, idx) => {
             const row = Math.floor(idx / gridSize);
             const col = idx % gridSize;
@@ -179,11 +183,7 @@
             el.className = `ball-item ${color}`;
             el.style.left = `${x}px`;
             el.style.top = `${y}px`;
-
-            if (color === 'grey') {
-                el.textContent = '?';
-            }
-
+            if (color === 'grey') el.textContent = '?';
             box.appendChild(el);
         });
 
@@ -196,13 +196,13 @@
         if (displayBalls.grey > 0) legendItems.push(`<span class="badge bg-secondary me-1">Tidak diketahui: ${displayBalls.grey}</span>`);
         legend.innerHTML = legendItems.join('');
 
-        // === Highlight pilihan radio ===
-        document.querySelectorAll('.choice-card').forEach(card => {
-            const radio = card.querySelector('input[type="radio"]');
+        // === Clickable cards ===
+        document.querySelectorAll('.ct-prospect-card').forEach(card => {
             card.addEventListener('click', () => {
-                document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+                document.querySelectorAll('.ct-prospect-card').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
-                radio.checked = true;
+                const radio = card.querySelector('input[type="radio"]');
+                if (radio) radio.checked = true;
             });
         });
     </script>

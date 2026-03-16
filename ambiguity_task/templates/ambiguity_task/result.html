@@ -3,77 +3,88 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'global/ambiguity_task.css' %}">
+    <link rel="stylesheet" href="{% static 'global/company_task.css' %}">
 {% endblock %}
 
 {% block title %}
-    <title>Result Ambiguity Task - Moral Environment</title>
+    <title>Hasil Ambiguity Task - Moral Environment</title>
 {% endblock %}
 
 {% block content %}
-    <div class="card">
-        <div class="card-header d-flex flex-row justify-content-between align-items-center">
-            <h3 class="m-0">Hasil Ambiguity Task</h3>
-            <h3 class="m-0">
-                <span class="badge text-bg-primary">Ronde {{ player.round_number }} dari 5</span>
-            </h3>
-        </div>
-        <div class="card-body">
-            <!-- Label animasi -->
-            <div class="text-center mb-2">
-                <h5 id="animLabel" class="text-muted">Membuka kotak bola...</h5>
-            </div>
+    <!-- Header -->
+    <div class="ct-header d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0">Hasil Ambiguity Task</h3>
+        <span class="badge text-bg-primary fs-6">Ronde {{ player.round_number }} dari 5</span>
+    </div>
 
-            <!-- Ambiguity Box Animation Container -->
-            <div class="ambiguity-box-container">
-                <div class="ambiguity-box" id="ambiguityBox"></div>
-            </div>
+    <!-- Label animasi -->
+    <div class="text-center mb-2">
+        <h5 id="animLabel" class="text-muted">Membuka kotak bola...</h5>
+    </div>
 
-            <!-- Legenda komposisi (muncul setelah animasi) -->
-            <div class="text-center mt-2" id="compLegend" style="display: none;">
-                <span class="badge bg-danger me-1">Merah: {{ player.comp_red }}</span>
-                <span class="badge bg-warning text-dark me-1">Kuning: {{ player.comp_yellow }}</span>
-                <span class="badge bg-primary me-1">Biru: {{ player.comp_blue }}</span>
-            </div>
+    <!-- Ambiguity Box Animation Container -->
+    <div class="ambiguity-box-container">
+        <div class="ambiguity-box" id="ambiguityBox"></div>
+    </div>
 
-            <!-- Hasil (muncul setelah animasi) -->
-            <div id="resultPanel" style="display: none;" class="mt-4">
-                {% if win %}
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">
-                            <i class="fa-solid fa-circle-check me-1"></i>
-                            Bola yang keluar: <strong class="{{ drawn_color_text }}">{{ drawn_color }}</strong>
-                        </h4>
-                        <p class="fw-bold fs-5">
-                            Selamat! Anda mendapatkan <strong>{{ player.hasil_token }} token</strong> pada ronde ini.
-                        </p>
-                        <hr>
-                        <p class="mb-0">
-                            Pilihan Anda: <strong>{{ chosen_display }}</strong>
-                        </p>
-                    </div>
-                {% else %}
-                    <div class="alert alert-danger" role="alert">
-                        <h4 class="alert-heading">
-                            <i class="fa-solid fa-circle-xmark me-1"></i>
-                            Bola yang keluar: <strong class="{{ drawn_color_text }}">{{ drawn_color }}</strong>
-                        </h4>
-                        <p class="fw-bold fs-5">
-                            Anda tidak mendapatkan token pada ronde ini.
-                        </p>
-                        <hr>
-                        <p class="mb-0">
-                            Pilihan Anda: <strong>{{ chosen_display }}</strong>
-                        </p>
-                    </div>
-                {% endif %}
+    <!-- Legenda komposisi (muncul setelah animasi) -->
+    <div class="text-center mt-2 mb-3" id="compLegend" style="display: none;">
+        <span class="badge bg-danger me-1">Merah: {{ player.comp_red }}</span>
+        <span class="badge bg-warning text-dark me-1">Kuning: {{ player.comp_yellow }}</span>
+        <span class="badge bg-primary me-1">Biru: {{ player.comp_blue }}</span>
+    </div>
+
+    <!-- Hasil (muncul setelah animasi) -->
+    <div id="resultPanel" style="display: none;">
+        {% if win %}
+            <div class="alert alert-success text-center mb-3">
+                <h4 class="mb-1">
+                    <i class="fa-solid fa-circle-check me-1"></i>
+                    Bola yang keluar: <strong class="{{ drawn_color_text }}">{{ drawn_color }}</strong>
+                </h4>
+                <p class="fw-bold fs-5 mb-0">
+                    Selamat! Anda mendapatkan <strong>{{ player.hasil_token }} token</strong> pada ronde ini.
+                </p>
             </div>
+        {% else %}
+            <div class="alert alert-danger text-center mb-3">
+                <h4 class="mb-1">
+                    <i class="fa-solid fa-circle-xmark me-1"></i>
+                    Bola yang keluar: <strong class="{{ drawn_color_text }}">{{ drawn_color }}</strong>
+                </h4>
+                <p class="fw-bold fs-5 mb-0">
+                    Anda tidak mendapatkan token pada ronde ini.
+                </p>
+            </div>
+        {% endif %}
+
+        <!-- Tabel Hasil -->
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Pilihan Anda</th>
+                        <td>{{ chosen_display }}</td>
+                    </tr>
+                    <tr>
+                        <th>Bola yang keluar</th>
+                        <td><strong class="{{ drawn_color_text }}">{{ drawn_color }}</strong></td>
+                    </tr>
+                    <tr class="table-primary">
+                        <th>Token yang didapatkan</th>
+                        <td><strong class="fs-5">{{ player.hasil_token }} token</strong></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="card-footer">
-            <button type="submit" class="otree-btn btn btn-primary" id="btnNext" disabled>
-                <span>Lanjut</span>
-                <i class="fa-solid fa-forward ms-1"></i>
-            </button>
-        </div>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="text-center">
+        <button type="submit" class="otree-btn btn btn-primary btn-lg ct-cta-btn" id="btnNext" disabled>
+            <span>Lanjut</span>
+            <i class="fa-solid fa-forward ms-2"></i>
+        </button>
     </div>
 {% endblock %}
 
