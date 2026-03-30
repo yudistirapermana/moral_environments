@@ -31,14 +31,17 @@ class game(Page):
                 prob_pct=int(prob * 100),
             ))
 
-        # Data untuk Chart.js (JSON)
+        # Data untuk Chart.js (JSON) — warna urutan: hijau, kuning, merah
+        chart_colors = ['#28a745', '#dc3545', '#ffc107']
         a_chart = dict(
             labels=[f"{o['payoff']} token ({o['prob_pct']}%)" for o in a_display],
             data=[o['prob_pct'] for o in a_display],
+            colors=chart_colors[:len(a_display)],
         )
         b_chart = dict(
             labels=[f"{o['payoff']} token ({o['prob_pct']}%)" for o in b_display],
             data=[o['prob_pct'] for o in b_display],
+            colors=chart_colors[:len(b_display)],
         )
 
         return dict(
@@ -96,6 +99,14 @@ class result(Page):
         )
 
 
+class jeda_ambiguity(Page):
+    def is_displayed(self):
+        return self.round_number == Constants.num_rounds
+
+    def vars_for_template(self):
+        return dict()
+
+
 page_sequence = [
-    game, result
+    game, result, jeda_ambiguity
 ]

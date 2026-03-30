@@ -4,7 +4,6 @@ import random
 
 class info_all_round(Page):
     def vars_for_template(self):
-        show_up_fee = self.session.config.get('participation_fee', 0)
         treatment = self.session.config.get('treatment', 'by_return')
 
         # RISK TASK
@@ -68,35 +67,62 @@ class info_all_round(Page):
             total_ambiguity=total_ambiguity,
             total_risk=total_risk,
             total_company=total_company,
-            show_up_fee=show_up_fee,
             treatment=treatment,
         )
 
 
 class get_payment(Page):
     def vars_for_template(self):
-        allowed_apps = ["risk_task", "ambiguity_task", "company_task"]
-        if not self.player.field_maybe_none('chosen_app'):  # cek field model, bukan participant.vars
-            app_list = []
+        if self.player.field_maybe_none('chosen_risk_round') is None:
+            risk_players = [p for p in self.participant.get_players()
+                            if p.__module__.startswith('risk_task')]
+            ambiguity_players = [p for p in self.participant.get_players()
+                                 if p.__module__.startswith('ambiguity_task')]
+            company_players = [p for p in self.participant.get_players()
+                               if p.__module__.startswith('company_task')]
 
-            for p in self.player.participant.get_players():
-                app_name = p.__class__.__module__.split('.')[0]
+            risk_chosen = random.choice(risk_players)
+            ambiguity_chosen = random.choice(ambiguity_players)
+            company_chosen = random.choice(company_players)
 
-                if app_name in allowed_apps:
-                    app_list.append(app_name)
+            self.player.chosen_risk_round = risk_chosen.round_number
+            self.player.chosen_ambiguity_round = ambiguity_chosen.round_number
+            self.player.chosen_company_round = company_chosen.round_number
+            self.player.risk_payoff = risk_chosen.hasil_token
+            self.player.ambiguity_payoff = ambiguity_chosen.hasil_token
+            self.player.company_payoff = company_chosen.hasil_token
+            self.player.total_token = (risk_chosen.hasil_token +
+                                       ambiguity_chosen.hasil_token +
+                                       company_chosen.hasil_token)
 
-            chosen_app = random.choice(app_list)
-
-            # simpan ke database
-            self.player.chosen_app = chosen_app
+        registration_fee = 20000
 
         return dict(
-            chosen_app=self.player.chosen_app
+            chosen_risk_round=self.player.chosen_risk_round,
+            chosen_ambiguity_round=self.player.chosen_ambiguity_round,
+            chosen_company_round=self.player.chosen_company_round,
+            risk_payoff=self.player.risk_payoff,
+            ambiguity_payoff=self.player.ambiguity_payoff,
+            company_payoff=self.player.company_payoff,
+            total_token=self.player.total_token,
+            registration_fee=registration_fee,
         )
 
 
 class result(Page):
-    pass
+    def vars_for_template(self):
+        registration_fee = 20000
+
+        return dict(
+            chosen_risk_round=self.player.chosen_risk_round,
+            chosen_ambiguity_round=self.player.chosen_ambiguity_round,
+            chosen_company_round=self.player.chosen_company_round,
+            risk_payoff=self.player.risk_payoff,
+            ambiguity_payoff=self.player.ambiguity_payoff,
+            company_payoff=self.player.company_payoff,
+            total_token=self.player.total_token,
+            registration_fee=registration_fee,
+        )
 
 
 page_sequence = [

@@ -10,9 +10,9 @@ SESSION_CONFIGS = [
             'risk_task',
             'ambiguity_task',
             'company_task',
-            'payment_page',
             'moral_survey',
-            'survey_player'
+            'survey_player',
+            'payment_page'
         ],
         num_demo_participants=1,
         treatment='by_return',
@@ -26,9 +26,9 @@ SESSION_CONFIGS = [
             'risk_task',
             'ambiguity_task',
             'company_task',
-            'payment_page',
             'moral_survey',
-            'survey_player'
+            'survey_player',
+            'payment_page'
         ],
         num_demo_participants=1,
         treatment='by_capitalisation',

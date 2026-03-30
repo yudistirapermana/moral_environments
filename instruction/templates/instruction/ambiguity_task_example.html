@@ -1,6 +1,11 @@
 {% extends "global/Page.html" %}
 {% load otree static %}
 
+{% block style %}
+    <link rel="stylesheet" href="{% static 'global/ambiguity_task.css' %}">
+    <link rel="stylesheet" href="{% static 'global/company_task.css' %}">
+{% endblock %}
+
 {% block title %}
     <title>Contoh Halaman Ambiguity Task</title>
 {% endblock %}
@@ -15,27 +20,73 @@
                 Berikut adalah contoh untuk sebuah ronde di dalam <i>Ambiguity Task</i> dimana Anda harus memilih salah
                 satu dari 2 prospek ambigu berikut.
             </p>
-            <ul class="list-group mb-3">
-                <li class="list-group-item">
-                    <strong>Situasi</strong>: Terdapat 100 bola berwarna Biru, Merah, dan Kuning di dalam sebuah kotak
-                    tertutup untuk kemudian diambil salah satu secara acak. Tidak ada info mengenai komposisi bola Biru,
-                    Merah, dan Kuning di dalam kotak tersebut.
-                </li>
-                <li class="list-group-item">
-                    <strong>Prospek A</strong>: Anda akan mendapatkan 150 token jika bola Biru yang keluar dari
-                    pengambilan secara acak.
-                </li>
-                <li class="list-group-item">
-                    <strong>Prospek B</strong>: Anda akan mendapatkan 80 token jika bola Merah atau Kuning yang keluar
-                    dari pengambilan secara acak.
-                </li>
-            </ul>
+
+            <!-- Info situasi -->
+            <div class="ct-damage-banner mb-3" style="border-left-color: #0d6efd; border-color: #0d6efd; background: linear-gradient(135deg, #e7f1ff, #cfe2ff); color: #084298;">
+                <strong>Situasi:</strong> Terdapat 100 bola berwarna Biru, Merah, dan Kuning di dalam sebuah kotak
+                tertutup untuk kemudian diambil salah satu secara acak. Diketahui ada 30 bola berwarna Merah.
+                Sisanya berwarna Kuning dan Biru dengan komposisi yang tidak diketahui.
+            </div>
+
+            <!-- Ilustrasi kotak bola -->
+            <div class="ball-box-container">
+                <div class="ball-box" id="exampleBallBox"></div>
+            </div>
+
+            <!-- Legenda -->
+            <div class="text-center mb-3">
+                <span class="badge bg-danger me-1">Merah: 30</span>
+                <span class="badge bg-secondary me-1">Tidak diketahui: 70</span>
+            </div>
+
+            <!-- Ilustrasi pilihan prospek -->
+            <div class="text-center mb-3">
+                <h6 class="text-success fw-bold m-0">
+                    <i class="fa-solid fa-hand-pointer me-1"></i>
+                    Pilih satu warna bola. Jika bola pilihan Anda yang keluar,
+                    Anda mendapatkan <strong>3.000 token</strong>.
+                </h6>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
+                <div class="col">
+                    <div class="ct-prospect-card w-100" style="cursor: default;">
+                        <div class="ct-prospect-header" style="justify-content: center;">
+                            <span class="ct-prospect-title">Merah</span>
+                        </div>
+                        <div class="ct-prospect-body text-center">
+                            <div class="choice-ball red mx-auto"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="ct-prospect-card w-100" style="cursor: default;">
+                        <div class="ct-prospect-header" style="justify-content: center;">
+                            <span class="ct-prospect-title">Kuning</span>
+                        </div>
+                        <div class="ct-prospect-body text-center">
+                            <div class="choice-ball yellow mx-auto"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="ct-prospect-card w-100" style="cursor: default;">
+                        <div class="ct-prospect-header" style="justify-content: center;">
+                            <span class="ct-prospect-title">Biru</span>
+                        </div>
+                        <div class="ct-prospect-body text-center">
+                            <div class="choice-ball blue mx-auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <p>
                 Tim peneliti tidak mengetahui komposisi warna bola di dalam kotak tertutup tersebut. Penentuannya murni
                 dilakukan oleh orang lain atau oleh komputer.
             </p>
             <p class="m-0">
-                Klik <strong>’Lanjutkan’</strong> untuk menuju ke contoh selanjutnya jika Anda sudah memahami contoh
+                Klik <strong>'Lanjutkan'</strong> untuk menuju ke contoh selanjutnya jika Anda sudah memahami contoh
                 <i>Ambiguity Task</i> ini.
             </p>
         </div>
@@ -46,4 +97,45 @@
             </button>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        // Render static ball box illustration (30 red, 70 grey unknown)
+        const box = document.getElementById('exampleBallBox');
+        const boxSize = 400;
+        const ballSize = 22;
+        const padding = 12;
+        const gridSize = 10;
+        const usableSize = boxSize - padding * 2;
+        const spacing = usableSize / gridSize;
+
+        const balls = [];
+        for (let i = 0; i < 30; i++) balls.push('red');
+        for (let i = 0; i < 70; i++) balls.push('grey');
+
+        // Shuffle
+        for (let i = balls.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [balls[i], balls[j]] = [balls[j], balls[i]];
+        }
+
+        balls.forEach((color, idx) => {
+            const row = Math.floor(idx / gridSize);
+            const col = idx % gridSize;
+            const jitterX = (Math.random() - 0.5) * (spacing * 0.25);
+            const jitterY = (Math.random() - 0.5) * (spacing * 0.25);
+            let x = padding + col * spacing + spacing / 2 - ballSize / 2 + jitterX;
+            let y = padding + row * spacing + spacing / 2 - ballSize / 2 + jitterY;
+            x = Math.max(padding, Math.min(boxSize - padding - ballSize, x));
+            y = Math.max(padding, Math.min(boxSize - padding - ballSize, y));
+
+            const el = document.createElement('div');
+            el.className = 'ball-item ' + color;
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            if (color === 'grey') el.textContent = '?';
+            box.appendChild(el);
+        });
+    </script>
 {% endblock %}

@@ -33,13 +33,16 @@ class risk_game(Page):
                 prob_pct=int(prob * 100),
             ))
 
+        chart_colors = ['#28a745', '#dc3545', '#ffc107']
         a_chart = dict(
             labels=[f"{o['payoff']} token ({o['prob_pct']}%)" for o in a_display],
             data=[o['prob_pct'] for o in a_display],
+            colors=chart_colors[:len(a_display)],
         )
         b_chart = dict(
             labels=[f"{o['payoff']} token ({o['prob_pct']}%)" for o in b_display],
             data=[o['prob_pct'] for o in b_display],
+            colors=chart_colors[:len(b_display)],
         )
 
         return dict(

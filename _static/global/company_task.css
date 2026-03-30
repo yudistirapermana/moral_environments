@@ -160,8 +160,9 @@
     border-radius: 50%;
     flex-shrink: 0;
 }
-.ct-dot-green { background: #28a745; }
-.ct-dot-red   { background: #dc3545; }
+.ct-dot-green  { background: #28a745; }
+.ct-dot-yellow { background: #ffc107; }
+.ct-dot-red    { background: #dc3545; }
 
 /* --- Ambiguity Bar Visual --- */
 .ct-amb-visual {

@@ -20,4 +20,10 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    chosen_app = models.StringField(blank=True)
+    chosen_risk_round = models.IntegerField(blank=True)
+    chosen_ambiguity_round = models.IntegerField(blank=True)
+    chosen_company_round = models.IntegerField(blank=True)
+    risk_payoff = models.IntegerField(blank=True)
+    ambiguity_payoff = models.IntegerField(blank=True)
+    company_payoff = models.IntegerField(blank=True)
+    total_token = models.IntegerField(blank=True)

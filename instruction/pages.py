@@ -18,7 +18,9 @@ class ambiguity_task_example(Page):
 
 
 class company_task_example(Page):
-    pass
+    def vars_for_template(self):
+        treatment = self.session.config.get('treatment', 'by_return')
+        return dict(treatment=treatment)
 
 
 class practice_session(Page):

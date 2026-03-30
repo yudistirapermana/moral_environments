@@ -2,7 +2,16 @@ from .models import *
 
 
 class survey_page(Page):
-    pass
+    form_model = 'player'
+    form_fields = [
+        'usia',
+        'jenis_kelamin',
+        'jenjang_pendidikan',
+        'bidang_studi',
+        'pengeluaran',
+        'platform_pembayaran',
+        'nomor_pembayaran',
+    ]
 
 
 page_sequence = [
