@@ -1,6 +1,7 @@
 from os import environ
 
 SESSION_CONFIGS = [
+    # --- Full experiment sessions ---
     dict(
         display_name='Moral Environment - By Return',
         name='moral_env_by_return',
@@ -32,6 +33,72 @@ SESSION_CONFIGS = [
         ],
         num_demo_participants=1,
         treatment='by_capitalisation',
+    ),
+    # --- Testing sessions (individual apps) ---
+    dict(
+        display_name='[TEST] Risk Task',
+        name='test_risk_task',
+        app_sequence=['risk_task'],
+        num_demo_participants=2,
+        treatment='by_return',
+    ),
+    dict(
+        display_name='[TEST] Ambiguity Task',
+        name='test_ambiguity_task',
+        app_sequence=['ambiguity_task'],
+        num_demo_participants=2,
+        treatment='by_return',
+    ),
+    dict(
+        display_name='[TEST] Company Task - By Return',
+        name='test_company_task_return',
+        app_sequence=['company_task'],
+        num_demo_participants=2,
+        treatment='by_return',
+    ),
+    dict(
+        display_name='[TEST] Company Task - By Capitalisation',
+        name='test_company_task_cap',
+        app_sequence=['company_task'],
+        num_demo_participants=2,
+        treatment='by_capitalisation',
+    ),
+    dict(
+        display_name='[TEST] Moral Survey',
+        name='test_moral_survey',
+        app_sequence=['moral_survey'],
+        num_demo_participants=2,
+        treatment='by_return',
+    ),
+    dict(
+        display_name='[TEST] Survey Player',
+        name='test_survey_player',
+        app_sequence=['survey_player'],
+        num_demo_participants=2,
+        treatment='by_return',
+    ),
+    dict(
+        display_name='[TEST] Payment Page',
+        name='test_payment_page',
+        app_sequence=['risk_task', 'ambiguity_task', 'company_task', 'payment_page'],
+        num_demo_participants=2,
+        treatment='by_return',
+    ),
+    dict(
+        display_name='[TEST] Full Flow - By Return (2 players)',
+        name='test_full_by_return',
+        app_sequence=[
+            'instruction',
+            'practice',
+            'risk_task',
+            'ambiguity_task',
+            'company_task',
+            'moral_survey',
+            'survey_player',
+            'payment_page'
+        ],
+        num_demo_participants=2,
+        treatment='by_return',
     ),
 ]
 
