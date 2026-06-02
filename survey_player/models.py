@@ -68,7 +68,9 @@ class Player(BasePlayer):
             ['Dana', 'Dana'],
             ['ShopeePay', 'ShopeePay'],
             ['LinkAja', 'LinkAja'],
-            ['Transfer Bank', 'Transfer Bank'],
+            ['BNI', 'Bank BNI'],
+            ['Mandiri', 'Bank Mandiri'],
+            ['CIMB Niaga', 'Bank CIMB Niaga'],
         ],
     )
     nomor_pembayaran = models.StringField(

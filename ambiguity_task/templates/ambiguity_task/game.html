@@ -4,6 +4,13 @@
 {% block style %}
     <link rel="stylesheet" href="{% static 'global/ambiguity_task.css' %}">
     <link rel="stylesheet" href="{% static 'global/company_task.css' %}">
+    <style>
+        .ct-prospect-title { font-size: 1.15rem; }
+        .ct-prospect-body p { font-size: 1.05rem; }
+        .ct-header h3 { font-size: 1.6rem; }
+        .text-success.fw-bold { font-size: 1.1rem; }
+        #ballLegend .badge { font-size: 0.95rem; }
+    </style>
 {% endblock %}
 
 {% block title %}
@@ -22,7 +29,7 @@
         {{ info_text }}
     </div>
 
-    <!-- Visualisasi kotak bola (inline styles for reliability) -->
+    <!-- Visualisasi kotak (inline styles for reliability) -->
     <div style="display:flex; justify-content:center; margin:16px 0;">
         <div id="ballBox" style="width:400px; height:400px; background:linear-gradient(145deg,#f8f9fa,#e9ecef); border:3px solid #adb5bd; border-radius:14px; position:relative; overflow:hidden; box-shadow:inset 0 3px 12px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.08);"></div>
     </div>
@@ -35,10 +42,10 @@
         <h5 class="text-success fw-bold m-0">
             <i class="fa-solid fa-hand-pointer me-1"></i>
             {% if choice_type == 'single' %}
-                Pilih satu warna bola. Jika bola pilihan Anda yang keluar,
+                Pilih satu warna kotak. Jika kotak pilihan Anda yang keluar,
                 Anda mendapatkan <strong>3.000 token</strong>.
             {% else %}
-                Pilih salah satu kombinasi warna. Jika bola dalam kombinasi
+                Pilih salah satu kombinasi warna. Jika kotak dalam kombinasi
                 pilihan Anda yang keluar, Anda mendapatkan <strong>3.000 token</strong>.
             {% endif %}
         </h5>
@@ -56,7 +63,7 @@
                         <span class="ct-prospect-title">Merah</span>
                     </div>
                     <div class="ct-prospect-body text-center">
-                        <div style="width:50px; height:50px; border-radius:50%; margin:0 auto; background:radial-gradient(circle at 35% 35%, #ff6b6b, #e53935); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
+                        <div style="width:50px; height:50px; border-radius:4px; margin:0 auto; background:radial-gradient(circle at 35% 35%, #ff6b6b, #e53935); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
                     </div>
                 </label>
             </div>
@@ -69,7 +76,7 @@
                         <span class="ct-prospect-title">Kuning</span>
                     </div>
                     <div class="ct-prospect-body text-center">
-                        <div style="width:50px; height:50px; border-radius:50%; margin:0 auto; background:radial-gradient(circle at 35% 35%, #fff176, #fdd835); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
+                        <div style="width:50px; height:50px; border-radius:4px; margin:0 auto; background:radial-gradient(circle at 35% 35%, #fff176, #fdd835); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
                     </div>
                 </label>
             </div>
@@ -82,7 +89,7 @@
                         <span class="ct-prospect-title">Biru</span>
                     </div>
                     <div class="ct-prospect-body text-center">
-                        <div style="width:50px; height:50px; border-radius:50%; margin:0 auto; background:radial-gradient(circle at 35% 35%, #64b5f6, #1e88e5); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
+                        <div style="width:50px; height:50px; border-radius:4px; margin:0 auto; background:radial-gradient(circle at 35% 35%, #64b5f6, #1e88e5); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
                     </div>
                 </label>
             </div>
@@ -100,11 +107,11 @@
                     </div>
                     <div class="ct-prospect-body text-center">
                         <div class="d-flex justify-content-center gap-2 mb-2">
-                            <div style="width:32px; height:32px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #ff6b6b, #e53935); box-shadow:0 2px 6px rgba(0,0,0,0.2);"></div>
-                            <div style="width:32px; height:32px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #fff176, #fdd835); box-shadow:0 2px 6px rgba(0,0,0,0.2);"></div>
+                            <div style="width:32px; height:32px; border-radius:4px; background:radial-gradient(circle at 35% 35%, #ff6b6b, #e53935); box-shadow:0 2px 6px rgba(0,0,0,0.2);"></div>
+                            <div style="width:32px; height:32px; border-radius:4px; background:radial-gradient(circle at 35% 35%, #fff176, #fdd835); box-shadow:0 2px 6px rgba(0,0,0,0.2);"></div>
                         </div>
                         <p class="mb-0">
-                            Anda mendapatkan <strong>3.000 token</strong> jika bola
+                            Anda mendapatkan <strong>3.000 token</strong> jika kotak
                             <strong class="text-danger">Merah</strong> atau
                             <strong class="text-warning">Kuning</strong> yang keluar.
                         </p>
@@ -121,11 +128,11 @@
                     </div>
                     <div class="ct-prospect-body text-center">
                         <div class="d-flex justify-content-center gap-2 mb-2">
-                            <div style="width:32px; height:32px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #64b5f6, #1e88e5); box-shadow:0 2px 6px rgba(0,0,0,0.2);"></div>
-                            <div style="width:32px; height:32px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #fff176, #fdd835); box-shadow:0 2px 6px rgba(0,0,0,0.2);"></div>
+                            <div style="width:32px; height:32px; border-radius:4px; background:radial-gradient(circle at 35% 35%, #64b5f6, #1e88e5); box-shadow:0 2px 6px rgba(0,0,0,0.2);"></div>
+                            <div style="width:32px; height:32px; border-radius:4px; background:radial-gradient(circle at 35% 35%, #fff176, #fdd835); box-shadow:0 2px 6px rgba(0,0,0,0.2);"></div>
                         </div>
                         <p class="mb-0">
-                            Anda mendapatkan <strong>3.000 token</strong> jika bola
+                            Anda mendapatkan <strong>3.000 token</strong> jika kotak
                             <strong class="text-primary">Biru</strong> atau
                             <strong class="text-warning">Kuning</strong> yang keluar.
                         </p>
@@ -187,7 +194,7 @@
             y = Math.max(padding, Math.min(boxSize - padding - ballSize, y));
 
             const el = document.createElement('div');
-            el.style.cssText = 'position:absolute; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; box-shadow:0 2px 4px rgba(0,0,0,0.2);';
+            el.style.cssText = 'position:absolute; width:22px; height:22px; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; box-shadow:0 2px 4px rgba(0,0,0,0.2);';
             el.style.background = colorMap[color];
             el.style.left = `${x}px`;
             el.style.top = `${y}px`;

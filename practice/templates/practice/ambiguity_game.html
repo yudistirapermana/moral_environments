@@ -14,7 +14,7 @@
     <!-- Practice Banner -->
     <div class="alert alert-info text-center mb-3">
         <i class="fa-solid fa-graduation-cap me-1"></i>
-        <strong>Sesi Latihan</strong> — Hasil tidak memengaruhi pembayaran Anda
+        <strong>Sesi Latihan</strong>: Hasil tidak memengaruhi pembayaran Anda
     </div>
 
     <!-- Header -->
@@ -28,7 +28,7 @@
         {{ info_text }}
     </div>
 
-    <!-- Visualisasi kotak bola (inline styles for reliability) -->
+    <!-- Visualisasi kotak (inline styles for reliability) -->
     <div style="display:flex; justify-content:center; margin:16px 0;">
         <div id="ballBox" style="width:400px; height:400px; background:linear-gradient(145deg,#f8f9fa,#e9ecef); border:3px solid #adb5bd; border-radius:14px; position:relative; overflow:hidden; box-shadow:inset 0 3px 12px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.08);"></div>
     </div>
@@ -40,7 +40,7 @@
     <div class="text-center mb-3">
         <h5 class="text-success fw-bold m-0">
             <i class="fa-solid fa-hand-pointer me-1"></i>
-            Pilih satu warna bola. Jika bola pilihan Anda yang keluar,
+            Pilih satu warna kotak. Jika kotak pilihan Anda yang keluar,
             Anda mendapatkan <strong>3.000 token</strong>.
         </h5>
     </div>
@@ -56,7 +56,7 @@
                     <span class="ct-prospect-title">Merah</span>
                 </div>
                 <div class="ct-prospect-body text-center">
-                    <div style="width:50px; height:50px; border-radius:50%; margin:0 auto; background:radial-gradient(circle at 35% 35%, #ff6b6b, #e53935); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
+                    <div style="width:50px; height:50px; border-radius:4px; margin:0 auto; background:radial-gradient(circle at 35% 35%, #ff6b6b, #e53935); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
                 </div>
             </label>
         </div>
@@ -69,7 +69,7 @@
                     <span class="ct-prospect-title">Kuning</span>
                 </div>
                 <div class="ct-prospect-body text-center">
-                    <div style="width:50px; height:50px; border-radius:50%; margin:0 auto; background:radial-gradient(circle at 35% 35%, #fff176, #fdd835); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
+                    <div style="width:50px; height:50px; border-radius:4px; margin:0 auto; background:radial-gradient(circle at 35% 35%, #fff176, #fdd835); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
                 </div>
             </label>
         </div>
@@ -82,7 +82,7 @@
                     <span class="ct-prospect-title">Biru</span>
                 </div>
                 <div class="ct-prospect-body text-center">
-                    <div style="width:50px; height:50px; border-radius:50%; margin:0 auto; background:radial-gradient(circle at 35% 35%, #64b5f6, #1e88e5); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
+                    <div style="width:50px; height:50px; border-radius:4px; margin:0 auto; background:radial-gradient(circle at 35% 35%, #64b5f6, #1e88e5); box-shadow:0 3px 8px rgba(0,0,0,0.2);"></div>
                 </div>
             </label>
         </div>
@@ -140,7 +140,7 @@
             y = Math.max(padding, Math.min(boxSize - padding - ballSize, y));
 
             const el = document.createElement('div');
-            el.style.cssText = 'position:absolute; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; box-shadow:0 2px 4px rgba(0,0,0,0.2);';
+            el.style.cssText = 'position:absolute; width:22px; height:22px; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; box-shadow:0 2px 4px rgba(0,0,0,0.2);';
             el.style.background = colorMap[color];
             el.style.left = `${x}px`;
             el.style.top = `${y}px`;

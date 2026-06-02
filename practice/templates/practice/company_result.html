@@ -13,7 +13,7 @@
     <!-- Practice Banner -->
     <div class="alert alert-info text-center mb-3">
         <i class="fa-solid fa-graduation-cap me-1"></i>
-        <strong>Sesi Latihan</strong> — Hasil tidak memengaruhi pembayaran Anda
+        <strong>Sesi Latihan</strong>: Hasil tidak memengaruhi pembayaran Anda
     </div>
 
     <!-- Header -->
@@ -27,7 +27,7 @@
 
     <!-- Info Perusahaan -->
     <div class="ct-context-box mb-3" style="padding: 12px 16px;">
-        <strong>{{ range_type }}</strong> &mdash;
+        <strong>{{ range_type }}</strong>:
         Kapitalisasi: <strong>{{ capital }}</strong> |
         Investasi: <strong>{{ investasi }}</strong> |
         Sisa modal: <strong>{{ cc_inv }}</strong> token
@@ -87,9 +87,15 @@
                     <td>
                         {{ player.comp_kontribusi_token }} token
                         {% if treatment == 'by_return' %}
-                            <span class="text-muted">(dari return)</span>
+                            <span class="text-muted">(dari return
+                                {% if player.comp_prospek_terpilih == 'prospek-A' %}
+                                    Prospek A yang Anda pilih
+                                {% else %}
+                                    Prospek B yang Anda pilih
+                                {% endif %}
+                            )</span>
                         {% else %}
-                            <span class="text-muted">(dari kapitalisasi — tidak mengurangi pembayaran)</span>
+                            <span class="text-muted">(dari kapitalisasi + {{ capital }} token, tidak mengurangi pembayaran)</span>
                         {% endif %}
                     </td>
                 </tr>

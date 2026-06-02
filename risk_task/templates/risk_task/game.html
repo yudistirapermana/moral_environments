@@ -3,6 +3,13 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'global/company_task.css' %}">
+    <style>
+        .ct-outcome-row { font-size: 1.05rem; }
+        .ct-prospect-title { font-size: 1.15rem; }
+        .ct-prospect-body p, .ct-prospect-body div { font-size: 1rem; }
+        .ct-header h3 { font-size: 1.6rem; }
+        .text-success.fw-bold { font-size: 1.1rem; }
+    </style>
 {% endblock %}
 
 {% block title %}
@@ -47,8 +54,8 @@
                                 {% else %}
                                     <span class="ct-outcome-dot ct-dot-yellow"></span>
                                 {% endif %}
-                                Payoff <strong>{{ o.payoff }} token</strong>
-                                &mdash; prob. <strong>{{ o.prob_pct }}%</strong>
+                                Payoff <strong>{{ o.payoff }} token</strong>,
+                                prob. <strong>{{ o.prob_pct }}%</strong>
                             </div>
                         {% endfor %}
                     </div>
@@ -77,8 +84,8 @@
                                 {% else %}
                                     <span class="ct-outcome-dot ct-dot-yellow"></span>
                                 {% endif %}
-                                Payoff <strong>{{ o.payoff }} token</strong>
-                                &mdash; prob. <strong>{{ o.prob_pct }}%</strong>
+                                Payoff <strong>{{ o.payoff }} token</strong>,
+                                prob. <strong>{{ o.prob_pct }}%</strong>
                             </div>
                         {% endfor %}
                     </div>

@@ -1,9 +1,26 @@
 from os import environ
 
 SESSION_CONFIGS = [
-    # --- Full experiment sessions ---
+    # --- Full experiment (1 link, treatment diacak otomatis seimbang) ---
     dict(
-        display_name='Moral Environment - By Return',
+        display_name='Moral Environment - Random Assignment (GUNAKAN INI)',
+        name='moral_env',
+        app_sequence=[
+            'instruction',
+            'practice',
+            'risk_task',
+            'ambiguity_task',
+            'company_task',
+            'moral_survey',
+            'survey_player',
+            'payment_page'
+        ],
+        num_demo_participants=4,
+        # Tidak ada 'treatment' key → oTree acak otomatis di creating_session
+    ),
+    # --- Sesi terpisah (opsional, jika perlu kontrol manual) ---
+    dict(
+        display_name='Moral Environment - By Return (manual)',
         name='moral_env_by_return',
         app_sequence=[
             'instruction',
@@ -78,15 +95,14 @@ SESSION_CONFIGS = [
         treatment='by_return',
     ),
     dict(
-        display_name='[TEST] Payment Page',
+        display_name='[TEST] Payment Page - Combined',
         name='test_payment_page',
         app_sequence=['risk_task', 'ambiguity_task', 'company_task', 'payment_page'],
         num_demo_participants=2,
-        treatment='by_return',
     ),
     dict(
-        display_name='[TEST] Full Flow - By Return (2 players)',
-        name='test_full_by_return',
+        display_name='[TEST] Full Flow - Combined (2 players)',
+        name='test_full_combined',
         app_sequence=[
             'instruction',
             'practice',
@@ -98,7 +114,6 @@ SESSION_CONFIGS = [
             'payment_page'
         ],
         num_demo_participants=2,
-        treatment='by_return',
     ),
 ]
 

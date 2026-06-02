@@ -122,6 +122,7 @@
         </label>
         <input type="number" name="usia" class="form-control" min="15" max="80"
                placeholder="Masukkan usia Anda" required>
+        {{ formfield_errors 'usia' }}
     </div>
 
     <!-- 2. Jenis Kelamin -->
@@ -145,6 +146,7 @@
                 </label>
             </div>
         </div>
+        {{ formfield_errors 'jenis_kelamin' }}
     </div>
 
     <!-- 3. Jenjang Pendidikan -->
@@ -162,6 +164,7 @@
             <option value="S2">S2 (Magister)</option>
             <option value="S3">S3 (Doktor)</option>
         </select>
+        {{ formfield_errors 'jenjang_pendidikan' }}
     </div>
 
     <!-- 4. Bidang Studi -->
@@ -171,6 +174,7 @@
         </label>
         <input type="text" name="bidang_studi" class="form-control"
                placeholder="Contoh: Ilmu Ekonomi, Teknik Informatika, dll." required>
+        {{ formfield_errors 'bidang_studi' }}
     </div>
 
     <!-- 5. Pengeluaran -->
@@ -188,6 +192,7 @@
             <option value="Rp3.000.001 - Rp5.000.000">Rp3.000.001 - Rp5.000.000</option>
             <option value="> Rp5.000.000">Lebih dari Rp5.000.000</option>
         </select>
+        {{ formfield_errors 'pengeluaran' }}
     </div>
 
     <!-- 6. Platform Pembayaran -->
@@ -197,13 +202,20 @@
         </label>
         <select name="platform_pembayaran" class="form-select" required>
             <option value="" selected disabled>-- Pilih platform --</option>
-            <option value="GoPay">GoPay</option>
-            <option value="OVO">OVO</option>
-            <option value="Dana">Dana</option>
-            <option value="ShopeePay">ShopeePay</option>
-            <option value="LinkAja">LinkAja</option>
-            <option value="Transfer Bank">Transfer Bank</option>
+            <optgroup label="Dompet Digital">
+                <option value="GoPay">GoPay</option>
+                <option value="OVO">OVO</option>
+                <option value="Dana">Dana</option>
+                <option value="ShopeePay">ShopeePay</option>
+                <option value="LinkAja">LinkAja</option>
+            </optgroup>
+            <optgroup label="Transfer Bank">
+                <option value="BNI">Bank BNI</option>
+                <option value="Mandiri">Bank Mandiri</option>
+                <option value="CIMB Niaga">Bank CIMB Niaga</option>
+            </optgroup>
         </select>
+        {{ formfield_errors 'platform_pembayaran' }}
     </div>
 
     <!-- 7. Nomor Pembayaran -->
@@ -216,6 +228,7 @@
         <div class="sp-hint">
             Pastikan nomor yang Anda masukkan sesuai dengan platform pembayaran yang dipilih.
         </div>
+        {{ formfield_errors 'nomor_pembayaran' }}
     </div>
 
     <!-- CTA Button -->

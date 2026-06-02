@@ -4,7 +4,9 @@ import random
 
 class info_all_round(Page):
     def vars_for_template(self):
-        treatment = self.session.config.get('treatment', 'by_return')
+        treatment = self.participant.vars.get(
+            'treatment', self.session.config.get('treatment', 'by_return')
+        )
 
         # RISK TASK
         risk_players = []
@@ -34,7 +36,7 @@ class info_all_round(Page):
             ambiguity_data.append({
                 'round_number': p.round_number,
                 'choice':
-                    'Prospek A (Bola Biru)' if p.prospek_terpilih == 'prospek-A' else 'Prospek B (Bola Merah/Kuning)',
+                    'Prospek A (Kotak Biru)' if p.prospek_terpilih == 'prospek-A' else 'Prospek B (Kotak Merah/Kuning)',
                 'drawn_color': p.bola_keluar,
                 'payoff': p.hasil_token,
             })
@@ -78,50 +80,62 @@ class get_payment(Page):
                             if p.__module__.startswith('risk_task')]
             ambiguity_players = [p for p in self.participant.get_players()
                                  if p.__module__.startswith('ambiguity_task')]
-            company_players = [p for p in self.participant.get_players()
-                               if p.__module__.startswith('company_task')]
+            all_company = [p for p in self.participant.get_players()
+                           if p.__module__.startswith('company_task')]
 
             risk_chosen = random.choice(risk_players)
             ambiguity_chosen = random.choice(ambiguity_players)
-            company_chosen = random.choice(company_players)
+
+            # Pick 1 random round from company task (20 rounds, single treatment)
+            company_chosen = random.choice(all_company)
+            self.player.company_return_payoff = company_chosen.hasil_token
+            self.player.company_cap_payoff = 0
+            self.player.chosen_company_return_round = company_chosen.round_number
+            self.player.chosen_company_cap_round = company_chosen.round_number
 
             self.player.chosen_risk_round = risk_chosen.round_number
             self.player.chosen_ambiguity_round = ambiguity_chosen.round_number
-            self.player.chosen_company_round = company_chosen.round_number
             self.player.risk_payoff = risk_chosen.hasil_token
             self.player.ambiguity_payoff = ambiguity_chosen.hasil_token
-            self.player.company_payoff = company_chosen.hasil_token
+            self.player.company_payoff = (self.player.company_return_payoff +
+                                          self.player.company_cap_payoff)
             self.player.total_token = (risk_chosen.hasil_token +
                                        ambiguity_chosen.hasil_token +
-                                       company_chosen.hasil_token)
+                                       self.player.company_payoff)
 
-        registration_fee = 20000
+        participation_fee = 20000
 
         return dict(
             chosen_risk_round=self.player.chosen_risk_round,
             chosen_ambiguity_round=self.player.chosen_ambiguity_round,
-            chosen_company_round=self.player.chosen_company_round,
+            chosen_company_return_round=self.player.chosen_company_return_round,
+            chosen_company_cap_round=self.player.chosen_company_cap_round,
             risk_payoff=self.player.risk_payoff,
             ambiguity_payoff=self.player.ambiguity_payoff,
+            company_return_payoff=self.player.company_return_payoff,
+            company_cap_payoff=self.player.company_cap_payoff,
             company_payoff=self.player.company_payoff,
             total_token=self.player.total_token,
-            registration_fee=registration_fee,
+            participation_fee=participation_fee,
         )
 
 
 class result(Page):
     def vars_for_template(self):
-        registration_fee = 20000
+        participation_fee = 20000
 
         return dict(
             chosen_risk_round=self.player.chosen_risk_round,
             chosen_ambiguity_round=self.player.chosen_ambiguity_round,
-            chosen_company_round=self.player.chosen_company_round,
+            chosen_company_return_round=self.player.chosen_company_return_round,
+            chosen_company_cap_round=self.player.chosen_company_cap_round,
             risk_payoff=self.player.risk_payoff,
             ambiguity_payoff=self.player.ambiguity_payoff,
+            company_return_payoff=self.player.company_return_payoff,
+            company_cap_payoff=self.player.company_cap_payoff,
             company_payoff=self.player.company_payoff,
             total_token=self.player.total_token,
-            registration_fee=registration_fee,
+            participation_fee=participation_fee,
         )
 
 

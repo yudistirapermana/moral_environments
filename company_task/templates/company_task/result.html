@@ -25,7 +25,7 @@
 
     <!-- Info Perusahaan -->
     <div class="ct-context-box mb-3" style="padding: 12px 16px;">
-        <strong>{{ range_type }}</strong> &mdash;
+        <strong>{{ range_type }}</strong>:
         Kapitalisasi: <strong>{{ capital }}</strong> |
         Investasi: <strong>{{ investasi }}</strong> |
         Sisa modal: <strong>{{ cc_inv }}</strong> token
@@ -99,6 +99,10 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Sisa modal (Kapitalisasi &minus; Investasi)</th>
+                    <td>{{ cc_inv }} token</td>
+                </tr>
+                <tr>
                     <th>Return yang keluar</th>
                     <td>{{ return_mult }} dari investasi {{ investasi }} token</td>
                 </tr>
@@ -106,7 +110,7 @@
                     <th>Return dalam token</th>
                     <td>
                         {% if player.bencana_terjadi %}
-                            <span class="text-danger">0 token (bencana terjadi)</span>
+                            <span class="text-danger">0 token (bencana terjadi, investasi tidak kembali)</span>
                         {% else %}
                             <strong>{{ player.return_token }} token</strong>
                         {% endif %}
@@ -117,14 +121,20 @@
                     <td>
                         {{ player.kontribusi_token }} token
                         {% if treatment == 'by_return' %}
-                            <span class="text-muted">(dari return)</span>
+                            <span class="text-muted">(dari return —
+                                {% if player.prospek_terpilih == 'prospek-A' %}
+                                    Prospek A yang Anda pilih
+                                {% else %}
+                                    Prospek B yang Anda pilih
+                                {% endif %}
+                            )</span>
                         {% else %}
-                            <span class="text-muted">(dari kapitalisasi — tidak mengurangi pembayaran)</span>
+                            <span class="text-muted">(dari kapitalisasi + {{ capital }} token, tidak mengurangi pembayaran)</span>
                         {% endif %}
                     </td>
                 </tr>
                 <tr class="table-primary">
-                    <th>Hasil akhir ronde ini</th>
+                    <th>Hasil akhir ronde ini<br><small class="fw-normal text-muted">Sisa modal + Return{% if treatment == 'by_return' %} &minus; Kontribusi{% endif %}</small></th>
                     <td><strong class="fs-5">{{ player.hasil_token }} token</strong></td>
                 </tr>
             </tbody>

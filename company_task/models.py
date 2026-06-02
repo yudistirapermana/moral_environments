@@ -5,6 +5,7 @@ doc = """
 Company Task - Moral Environment
 20 ronde: 10 Risk (prob diketahui) + 10 Ambiguity (prob minimal)
 Treatment: By Return atau By Capitalisation (ditentukan di session config)
+hasil_token = cc_inv + return_token (no disaster) atau cc_inv saja (disaster)
 """
 
 
@@ -178,30 +179,43 @@ class Constants(BaseConstants):
 
 class Subsession(BaseSubsession):
     def creating_session(self):
-        """Generate actual probabilities for ambiguity rounds (11-20)"""
+        """Assign balanced random treatment + generate ambiguity probabilities."""
         if self.round_number == 1:
-            for player in self.get_players():
+            players = self.get_players()
+
+            # --- Balanced random treatment assignment ---
+            # Only assign to participants who don't have a treatment yet
+            # (single-treatment sessions set treatment via session config, skip these)
+            unassigned = [
+                p for p in players
+                if 'treatment' not in p.participant.vars
+                and 'treatment' not in self.session.config
+            ]
+            if unassigned:
+                n = len(unassigned)
+                half = n // 2
+                treatments = ['by_return'] * half + ['by_capitalisation'] * (n - half)
+                random.shuffle(treatments)
+                for player, t in zip(unassigned, treatments):
+                    player.participant.vars['treatment'] = t
+
+            # --- Generate ambiguity probabilities for rounds 11-20 ---
+            for player in players:
                 for r in range(11, 21):
                     p = player.in_round(r)
                     rd = Constants.rounds_data[r - 1]
 
-                    # Generate actual prob_a1 >= minimum
                     min_a1 = rd['prob_a1']
                     actual_a1 = min_a1 + random.random() * (1 - min_a1)
-                    actual_a2 = 1 - actual_a1
                     p.actual_prob_a1 = round(actual_a1, 4)
-                    p.actual_prob_a2 = round(actual_a2, 4)
+                    p.actual_prob_a2 = round(1 - actual_a1, 4)
 
-                    # Generate actual prob_b1 >= minimum
                     min_b1 = rd['prob_b1']
                     actual_b1 = min_b1 + random.random() * (1 - min_b1)
-                    actual_b2 = 1 - actual_b1
                     p.actual_prob_b1 = round(actual_b1, 4)
-                    p.actual_prob_b2 = round(actual_b2, 4)
+                    p.actual_prob_b2 = round(1 - actual_b1, 4)
 
-                    # Generate actual damage prob <= maximum (0.05)
-                    max_damage = rd['prob_damage']
-                    p.actual_prob_damage = round(random.random() * max_damage, 4)
+                    p.actual_prob_damage = round(random.random() * rd['prob_damage'], 4)
 
 
 class Group(BaseGroup):

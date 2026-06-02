@@ -3,6 +3,16 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'global/company_task.css' %}">
+    <style>
+        .ct-outcome-row { font-size: 1.05rem; }
+        .ct-prospect-title { font-size: 1.15rem; }
+        .ct-metric-label { font-size: 0.95rem; }
+        .ct-metric-value { font-size: 1.5rem; }
+        .ct-header h3 { font-size: 1.6rem; }
+        .ct-context-box p { font-size: 1.05rem; }
+        .text-success.fw-bold { font-size: 1.1rem; }
+        .ct-contribution-body p { font-size: 1.05rem; }
+    </style>
 {% endblock %}
 
 {% block title %}
@@ -112,13 +122,13 @@
                     <div class="ct-outcomes">
                         <div class="ct-outcome-row">
                             <span class="ct-outcome-dot ct-dot-green"></span>
-                            Return <strong>{{ ret_a1 }}x lipat</strong>
-                            &mdash; prob. <strong>{{ display_prob_a1 }}</strong>
+                            Return <strong>{{ ret_a1 }}x lipat</strong>,
+                            prob. <strong>{{ display_prob_a1 }}</strong>
                         </div>
                         <div class="ct-outcome-row">
                             <span class="ct-outcome-dot ct-dot-red"></span>
-                            Return <strong>{{ ret_a2 }}</strong>
-                            &mdash; prob. <strong>{{ display_prob_a2 }}</strong>
+                            Return <strong>{{ ret_a2 }}</strong>,
+                            prob. <strong>{{ display_prob_a2 }}</strong>
                         </div>
                     </div>
                 </div>
@@ -156,13 +166,13 @@
                     <div class="ct-outcomes">
                         <div class="ct-outcome-row">
                             <span class="ct-outcome-dot ct-dot-green"></span>
-                            Return <strong>{{ ret_b1 }}x lipat</strong>
-                            &mdash; prob. <strong>{{ display_prob_b1 }}</strong>
+                            Return <strong>{{ ret_b1 }}x lipat</strong>,
+                            prob. <strong>{{ display_prob_b1 }}</strong>
                         </div>
                         <div class="ct-outcome-row">
                             <span class="ct-outcome-dot ct-dot-red"></span>
-                            Return <strong>{{ ret_b2 }}</strong>
-                            &mdash; prob. <strong>{{ display_prob_b2 }}</strong>
+                            Return <strong>{{ ret_b2 }}</strong>,
+                            prob. <strong>{{ display_prob_b2 }}</strong>
                         </div>
                     </div>
                 </div>

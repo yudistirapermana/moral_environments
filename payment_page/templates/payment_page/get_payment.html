@@ -24,7 +24,7 @@
                         </div>
                         <div class="card-body text-center d-flex flex-column justify-content-center">
                             <div class="text-muted small">Ronde terpilih</div>
-                            <div id="risk-round" class="display-4 fw-bold my-2">—</div>
+                            <div id="risk-round" class="display-4 fw-bold my-2"></div>
                             <div id="risk-payoff" class="text-success fw-bold" style="display:none;">
                                 {{ risk_payoff }} Token
                             </div>
@@ -40,7 +40,7 @@
                         </div>
                         <div class="card-body text-center d-flex flex-column justify-content-center">
                             <div class="text-muted small">Ronde terpilih</div>
-                            <div id="ambiguity-round" class="display-4 fw-bold my-2">—</div>
+                            <div id="ambiguity-round" class="display-4 fw-bold my-2"></div>
                             <div id="ambiguity-payoff" class="text-success fw-bold" style="display:none;">
                                 {{ ambiguity_payoff }} Token
                             </div>
@@ -56,9 +56,9 @@
                         </div>
                         <div class="card-body text-center d-flex flex-column justify-content-center">
                             <div class="text-muted small">Ronde terpilih</div>
-                            <div id="company-round" class="display-4 fw-bold my-2">—</div>
+                            <div id="company-round" class="display-4 fw-bold my-2"></div>
                             <div id="company-payoff" class="text-success fw-bold" style="display:none;">
-                                {{ company_payoff }} Token
+                                {{ company_return_payoff }} Token
                             </div>
                         </div>
                     </div>
@@ -79,16 +79,26 @@
                             <td class="text-end fw-bold">{{ ambiguity_payoff }} Token</td>
                         </tr>
                         <tr>
-                            <td>Company Task (Ronde {{ chosen_company_round }})</td>
-                            <td class="text-end fw-bold">{{ company_payoff }} Token</td>
+                            <td>Company Task (Ronde {{ chosen_company_return_round }})</td>
+                            <td class="text-end fw-bold">{{ company_return_payoff }} Token</td>
                         </tr>
                         <tr class="border-top">
                             <td class="fw-bold">Total Token</td>
                             <td class="text-end fw-bold text-success">{{ total_token }} Token</td>
                         </tr>
                         <tr>
-                            <td>Registration Fee</td>
-                            <td class="text-end fw-bold">Rp {{ registration_fee }}</td>
+                            <td class="text-muted small" colspan="2">
+                                <i class="fa-solid fa-circle-info me-1"></i>
+                                Exchange Rate: 1 Token = Rp 1
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Total (dalam Rupiah)</td>
+                            <td class="text-end fw-bold text-success">Rp {{ total_token }}</td>
+                        </tr>
+                        <tr>
+                            <td>Participation Fee</td>
+                            <td class="text-end fw-bold">Rp {{ participation_fee }}</td>
                         </tr>
                     </table>
                 </div>
@@ -112,7 +122,7 @@
     <script>
         let finalRiskRound = {{ chosen_risk_round }};
         let finalAmbiguityRound = {{ chosen_ambiguity_round }};
-        let finalCompanyRound = {{ chosen_company_round }};
+        let finalCompanyRound = {{ chosen_company_return_round }};
 
         let riskBox = document.getElementById("risk-round");
         let ambiguityBox = document.getElementById("ambiguity-round");
@@ -123,7 +133,7 @@
             spinBtn.disabled = true;
             spinBtn.innerHTML = "Mengacak...";
 
-            // Phase 1: Spin Risk Task (0-1.5s)
+            // Phase 1: Spin Risk Task
             let riskCounter = 0;
             let riskInterval = setInterval(function () {
                 riskBox.innerHTML = Math.floor(Math.random() * 5) + 1;
@@ -134,7 +144,7 @@
                     riskBox.classList.add("text-primary");
                     document.getElementById("risk-payoff").style.display = "block";
 
-                    // Phase 2: Spin Ambiguity Task (1.5-3s)
+                    // Phase 2: Spin Ambiguity Task
                     let ambCounter = 0;
                     let ambInterval = setInterval(function () {
                         ambiguityBox.innerHTML = Math.floor(Math.random() * 5) + 1;
@@ -145,7 +155,7 @@
                             ambiguityBox.classList.add("text-warning");
                             document.getElementById("ambiguity-payoff").style.display = "block";
 
-                            // Phase 3: Spin Company Task (3-4.5s)
+                            // Phase 3: Spin Company Task
                             let compCounter = 0;
                             let compInterval = setInterval(function () {
                                 companyBox.innerHTML = Math.floor(Math.random() * 20) + 1;
@@ -156,7 +166,6 @@
                                     companyBox.classList.add("text-info");
                                     document.getElementById("company-payoff").style.display = "block";
 
-                                    // Show total and next button
                                     setTimeout(function () {
                                         spinBtn.style.display = "none";
                                         document.getElementById("total-section").style.display = "block";

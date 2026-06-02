@@ -1,7 +1,6 @@
 from .models import *
 import random
 import json
-import math
 
 
 class game(Page):
@@ -17,16 +16,15 @@ class game(Page):
     def vars_for_template(self):
         rd = Constants.rounds_data[self.round_number - 1]
         is_ambiguity = rd['round_type'] == 'ambiguity'
-        treatment = self.session.config.get('treatment', 'by_return')
+        treatment = self.participant.vars.get(
+            'treatment', self.session.config.get('treatment', 'by_return')
+        )
 
-        # Untuk ronde risk, tampilkan prob pasti
-        # Untuk ronde ambiguity, tampilkan "minimal X%"
         if is_ambiguity:
-            # Display probabilities as "minimal X%"
             display_prob_a1 = f"minimal {int(rd['prob_a1'] * 100)}%"
-            display_prob_a2 = f"sisanya"
+            display_prob_a2 = "sisanya"
             display_prob_b1 = f"minimal {int(rd['prob_b1'] * 100)}%"
-            display_prob_b2 = f"sisanya"
+            display_prob_b2 = "sisanya"
             display_prob_damage = f"maksimal {int(rd['prob_damage'] * 100)}%"
         else:
             display_prob_a1 = f"{int(rd['prob_a1'] * 100)}%"
@@ -35,7 +33,6 @@ class game(Page):
             display_prob_b2 = f"{int(rd['prob_b2'] * 100)}%"
             display_prob_damage = f"{int(rd['prob_damage'] * 100)}%"
 
-        # Return sebagai multiplier display (format desimal Indonesia: 2,8x)
         def fmt_mult(v):
             if v == int(v):
                 return str(int(v))
@@ -46,7 +43,6 @@ class game(Page):
         ret_b1_display = fmt_mult(rd['ret_b1'])
         ret_b2_display = f"{int(rd['ret_b2'] * 100)}%"
 
-        # Chart data (hanya untuk risk rounds)
         if not is_ambiguity:
             a_chart = dict(
                 labels=[
@@ -66,16 +62,13 @@ class game(Page):
             a_chart = None
             b_chart = None
 
-        # Damage value
         damage_value = rd['damage_multiplier'] * rd['investasi']
 
-        # Kontribusi text berdasarkan treatment
         if treatment == 'by_return':
             kontribusi_text = "dari nilai return yang diperoleh jika tidak terjadi kerusakan lingkungan"
         else:
             kontribusi_text = "dari nilai kapitalisasi perusahaan Anda, terlepas dari ada atau tidaknya kerusakan lingkungan"
 
-        # Minimum prob pct for ambiguity bar visualization
         min_prob_a1_pct = int(rd['prob_a1'] * 100)
         min_prob_b1_pct = int(rd['prob_b1'] * 100)
 
@@ -108,9 +101,10 @@ class game(Page):
     def before_next_page(self):
         rd = Constants.rounds_data[self.round_number - 1]
         is_ambiguity = rd['round_type'] == 'ambiguity'
-        treatment = self.session.config.get('treatment', 'by_return')
+        treatment = self.participant.vars.get(
+            'treatment', self.session.config.get('treatment', 'by_return')
+        )
 
-        # Tentukan probabilitas aktual
         if is_ambiguity:
             prob_a1 = self.player.actual_prob_a1
             prob_a2 = self.player.actual_prob_a2
@@ -124,57 +118,57 @@ class game(Page):
             prob_b2 = rd['prob_b2']
             prob_damage = rd['prob_damage']
 
-        # 1. Tentukan return berdasarkan prospek yang dipilih
+        # Tentukan return
         self.player.angka_keluar = random.randint(1, 10000)
-
         if self.player.prospek_terpilih == 'prospek-A':
             threshold = int(prob_a1 * 10000)
-            if self.player.angka_keluar <= threshold:
-                self.player.return_multiplier = rd['ret_a1']
-            else:
-                self.player.return_multiplier = rd['ret_a2']
+            self.player.return_multiplier = rd['ret_a1'] if self.player.angka_keluar <= threshold else rd['ret_a2']
         else:
             threshold = int(prob_b1 * 10000)
-            if self.player.angka_keluar <= threshold:
-                self.player.return_multiplier = rd['ret_b1']
-            else:
-                self.player.return_multiplier = rd['ret_b2']
+            self.player.return_multiplier = rd['ret_b1'] if self.player.angka_keluar <= threshold else rd['ret_b2']
 
         self.player.return_token = int(self.player.return_multiplier * rd['investasi'])
 
-        # 2. Cek apakah bencana terjadi
+        # Cek bencana
         self.player.angka_damage = random.randint(1, 10000)
-        damage_threshold = int(prob_damage * 10000)
-        self.player.bencana_terjadi = self.player.angka_damage <= damage_threshold
+        self.player.bencana_terjadi = self.player.angka_damage <= int(prob_damage * 10000)
 
-        # 3. Kalkulasi hasil akhir
+        cc_inv = rd['cc_inv']
+
         if self.player.bencana_terjadi:
-            # Bencana: tidak dapat return
+            # Bencana: tidak dapat return, hanya sisa modal (cc_inv)
             self.player.return_token = 0
-            self.player.kontribusi_token = 0
-            self.player.hasil_token = 0
+            self.player.hasil_token = cc_inv
+            # by_cap: kontribusi tetap dihitung dari kapital meski bencana ("terlepas dari kerusakan")
+            if treatment == 'by_return':
+                self.player.kontribusi_token = 0
+            else:
+                self.player.kontribusi_token = int(
+                    self.player.kontribusi_persen / 100 * rd['capital']
+                )
         else:
-            # Tidak bencana: hitung kontribusi
+            # Tidak bencana: hasil = sisa modal + return - kontribusi (jika by_return)
             if treatment == 'by_return':
                 self.player.kontribusi_token = int(
                     self.player.kontribusi_persen / 100 * self.player.return_token
                 )
-                self.player.hasil_token = self.player.return_token - self.player.kontribusi_token
+                self.player.hasil_token = cc_inv + self.player.return_token - self.player.kontribusi_token
             else:
-                # By capitalisation: kontribusi dari kapitalisasi, tidak mengurangi payment
+                # By capitalisation: kontribusi dari kapitalisasi, tidak mengurangi pembayaran
                 self.player.kontribusi_token = int(
                     self.player.kontribusi_persen / 100 * rd['capital']
                 )
-                self.player.hasil_token = self.player.return_token
+                self.player.hasil_token = cc_inv + self.player.return_token
 
 
 class result(Page):
     def vars_for_template(self):
         rd = Constants.rounds_data[self.round_number - 1]
         is_ambiguity = rd['round_type'] == 'ambiguity'
-        treatment = self.session.config.get('treatment', 'by_return')
+        treatment = self.participant.vars.get(
+            'treatment', self.session.config.get('treatment', 'by_return')
+        )
 
-        # Untuk ambiguity, ungkap probabilitas aktual di result page
         if is_ambiguity:
             actual_prob_a1_pct = round(self.player.actual_prob_a1 * 100, 1)
             actual_prob_a2_pct = round(self.player.actual_prob_a2 * 100, 1)
@@ -197,17 +191,13 @@ class result(Page):
         ret_a2 = f"{int(rd['ret_a2'] * 100)}%"
         ret_b1 = fmt_mult(rd['ret_b1'])
         ret_b2 = f"{int(rd['ret_b2'] * 100)}%"
-        # Determine if return is from outcome 1 (x lipat) or outcome 2 (%)
+
         rm = self.player.return_multiplier
         if self.player.prospek_terpilih == 'prospek-A':
             is_outcome1 = (rm == rd['ret_a1'])
         else:
             is_outcome1 = (rm == rd['ret_b1'])
-
-        if is_outcome1:
-            return_mult = fmt_mult(rm) + 'x lipat'
-        else:
-            return_mult = f"{int(rm * 100)}%"
+        return_mult = fmt_mult(rm) + 'x lipat' if is_outcome1 else f"{int(rm * 100)}%"
 
         return dict(
             round_type=rd['round_type'],

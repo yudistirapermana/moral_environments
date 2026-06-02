@@ -167,7 +167,9 @@ class company_game(Page):
 
     def vars_for_template(self):
         rd = Constants.company_data
-        treatment = self.session.config.get('treatment', 'by_return')
+        treatment = self.participant.vars.get(
+            'treatment', self.session.config.get('treatment', 'by_return')
+        )
 
         display_prob_a1 = f"{int(rd['prob_a1'] * 100)}%"
         display_prob_a2 = f"{int(rd['prob_a2'] * 100)}%"
@@ -233,7 +235,9 @@ class company_game(Page):
 
     def before_next_page(self):
         rd = Constants.company_data
-        treatment = self.session.config.get('treatment', 'by_return')
+        treatment = self.participant.vars.get(
+            'treatment', self.session.config.get('treatment', 'by_return')
+        )
 
         # 1. Tentukan return
         self.player.comp_angka_keluar = random.randint(1, 10000)
@@ -259,27 +263,35 @@ class company_game(Page):
         self.player.comp_bencana_terjadi = self.player.comp_angka_damage <= damage_threshold
 
         # 3. Kalkulasi hasil
+        cc_inv = rd['cc_inv']
         if self.player.comp_bencana_terjadi:
             self.player.comp_return_token = 0
-            self.player.comp_kontribusi_token = 0
-            self.player.comp_hasil_token = 0
+            self.player.comp_hasil_token = cc_inv
+            if treatment == 'by_return':
+                self.player.comp_kontribusi_token = 0
+            else:
+                self.player.comp_kontribusi_token = int(
+                    self.player.comp_kontribusi_persen / 100 * rd['capital']
+                )
         else:
             if treatment == 'by_return':
                 self.player.comp_kontribusi_token = int(
                     self.player.comp_kontribusi_persen / 100 * self.player.comp_return_token
                 )
-                self.player.comp_hasil_token = self.player.comp_return_token - self.player.comp_kontribusi_token
+                self.player.comp_hasil_token = cc_inv + self.player.comp_return_token - self.player.comp_kontribusi_token
             else:
                 self.player.comp_kontribusi_token = int(
                     self.player.comp_kontribusi_persen / 100 * rd['capital']
                 )
-                self.player.comp_hasil_token = self.player.comp_return_token
+                self.player.comp_hasil_token = cc_inv + self.player.comp_return_token
 
 
 class company_result(Page):
     def vars_for_template(self):
         rd = Constants.company_data
-        treatment = self.session.config.get('treatment', 'by_return')
+        treatment = self.participant.vars.get(
+            'treatment', self.session.config.get('treatment', 'by_return')
+        )
 
         def fmt_mult(v):
             if v == int(v):
