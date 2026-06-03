@@ -337,7 +337,24 @@ class company_result(Page):
 
 
 # ============================================================
-# 4. BREAK PAGE (jeda sebelum main task)
+# 4. CONTOH PEMBAYARAN LATIHAN
+# ============================================================
+class practice_payment(Page):
+    def vars_for_template(self):
+        risk_token = self.player.risk_hasil_token
+        ambiguity_token = self.player.amb_hasil_token
+        company_token = self.player.comp_hasil_token
+        total_token = risk_token + ambiguity_token + company_token
+        return dict(
+            risk_token=risk_token,
+            ambiguity_token=ambiguity_token,
+            company_token=company_token,
+            total_token=total_token,
+        )
+
+
+# ============================================================
+# 5. BREAK PAGE (jeda sebelum main task)
 # ============================================================
 class break_page(Page):
     pass
@@ -353,5 +370,6 @@ page_sequence = [
     ambiguity_result,
     company_game,
     company_result,
+    practice_payment,
     break_page,
 ]
