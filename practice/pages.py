@@ -133,7 +133,7 @@ class ambiguity_game(Page):
 class ambiguity_result(Page):
     def vars_for_template(self):
         chosen = self.player.amb_prospek_terpilih
-        chosen_display = f"Bola {chosen}"
+        chosen_display = f"Kotak {chosen}"
 
         color_css_map = {'Merah': 'red', 'Kuning': 'yellow', 'Biru': 'blue'}
         color_text_map = {'Merah': 'text-danger', 'Kuning': 'text-warning', 'Biru': 'text-primary'}

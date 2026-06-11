@@ -70,12 +70,12 @@ class result(Page):
         # Label pilihan peserta (human-readable)
         chosen = self.player.prospek_terpilih
         if round_data['choice_type'] == 'single':
-            chosen_display = f"Bola {chosen}"
+            chosen_display = f"Kotak {chosen}"
         else:
             if chosen == 'merah-kuning':
-                chosen_display = "Bola Merah atau Kuning"
+                chosen_display = "Kotak Merah atau Kuning"
             else:
-                chosen_display = "Bola Biru atau Kuning"
+                chosen_display = "Kotak Biru atau Kuning"
 
         # CSS class untuk warna bola yang keluar
         color_css_map = {'Merah': 'red', 'Kuning': 'yellow', 'Biru': 'blue'}

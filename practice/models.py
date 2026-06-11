@@ -26,7 +26,7 @@ class Constants(BaseConstants):
     ambiguity_data = dict(
         procedure='ellsberg',
         choice_type='single',
-        info_text='Terdapat 100 bola di dalam kotak tertutup. 30 bola berwarna Merah. '
+        info_text='Terdapat 100 kotak di dalam tempat tertutup. 30 kotak berwarna Merah. '
                   'Sisanya berwarna Kuning dan Biru dengan komposisi yang tidak diketahui.',
     )
     ambiguity_payoff_win = 3000

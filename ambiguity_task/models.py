@@ -19,38 +19,38 @@ class Constants(BaseConstants):
         dict(
             procedure='ellsberg',
             choice_type='single',
-            info_text='Terdapat 100 bola di dalam kotak tertutup. 30 bola berwarna Merah. '
+            info_text='Terdapat 100 kotak di dalam tempat tertutup. 30 kotak berwarna Merah. '
                       'Sisanya berwarna Kuning dan Biru dengan komposisi yang tidak diketahui.',
         ),
         # Ronde 2 (Ellsberg): Pilih kombinasi warna
         dict(
             procedure='ellsberg',
             choice_type='combination',
-            info_text='Terdapat 100 bola di dalam kotak tertutup. 30 bola berwarna Merah. '
+            info_text='Terdapat 100 kotak di dalam tempat tertutup. 30 kotak berwarna Merah. '
                       'Sisanya berwarna Kuning dan Biru dengan komposisi yang tidak diketahui.',
         ),
         # Ronde 3 (Partial Uncertainty): Pilih satu warna
         dict(
             procedure='partial',
             choice_type='single',
-            info_text='Terdapat 100 bola di dalam kotak tertutup. Masing-masing warna '
-                      '(Merah, Kuning, Biru) memiliki minimal 10 bola. '
-                      'Sisa 70 bola tidak diketahui komposisinya.',
+            info_text='Terdapat 100 kotak di dalam tempat tertutup. Masing-masing warna '
+                      '(Merah, Kuning, Biru) memiliki minimal 10 kotak. '
+                      'Sisa 70 kotak tidak diketahui komposisinya.',
         ),
         # Ronde 4 (Partial Uncertainty): Pilih kombinasi warna
         dict(
             procedure='partial',
             choice_type='combination',
-            info_text='Terdapat 100 bola di dalam kotak tertutup. Masing-masing warna '
-                      '(Merah, Kuning, Biru) memiliki minimal 10 bola. '
-                      'Sisa 70 bola tidak diketahui komposisinya.',
+            info_text='Terdapat 100 kotak di dalam tempat tertutup. Masing-masing warna '
+                      '(Merah, Kuning, Biru) memiliki minimal 10 kotak. '
+                      'Sisa 70 kotak tidak diketahui komposisinya.',
         ),
         # Ronde 5 (Full Unknown): Pilih satu warna
         dict(
             procedure='unknown',
             choice_type='single',
-            info_text='Terdapat 100 bola berwarna Merah, Kuning, dan Biru di dalam kotak tertutup. '
-                      'Komposisi warna bola tidak diketahui.',
+            info_text='Terdapat 100 kotak berwarna Merah, Kuning, dan Biru di dalam tempat tertutup. '
+                      'Komposisi warna kotak tidak diketahui.',
         ),
     ]
 
