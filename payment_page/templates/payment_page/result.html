@@ -58,6 +58,10 @@
                                 <td class="fw-bold">Participation Fee</td>
                                 <td class="text-end fw-bold fs-5">Rp {{ participation_fee }}</td>
                             </tr>
+                            <tr class="border-top">
+                                <td class="fw-bold">Total Pembayaran</td>
+                                <td class="text-end fw-bold text-success fs-5">Rp {{ total_payment }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -66,6 +70,7 @@
             <div class="text-center mt-4">
                 <div class="alert alert-info d-inline-block">
                     Pembayaran Anda: <strong>Rp {{ total_token }}</strong> (token) + <strong>Rp {{ participation_fee }}</strong> (participation fee)
+                    = <strong>Rp {{ total_payment }}</strong>
                 </div>
             </div>
         </div>

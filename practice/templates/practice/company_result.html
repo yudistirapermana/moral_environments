@@ -95,12 +95,12 @@
                                 {% endif %}
                             )</span>
                         {% else %}
-                            <span class="text-muted">(dari kapitalisasi + {{ capital }} token, tidak mengurangi pembayaran)</span>
+                            <span class="text-muted">(dari kapitalisasi + {{ capital }} token)</span>
                         {% endif %}
                     </td>
                 </tr>
                 <tr class="table-primary">
-                    <th>Hasil akhir ronde ini</th>
+                    <th>Hasil akhir ronde ini<br><small class="fw-normal text-muted">Sisa modal + Return &minus; Kontribusi</small></th>
                     <td><strong class="fs-5">{{ player.comp_hasil_token }} token</strong></td>
                 </tr>
             </tbody>

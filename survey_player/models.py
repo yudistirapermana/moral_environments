@@ -23,7 +23,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     usia = models.IntegerField(
         label='Usia',
-        min=15, max=80,
+        min=18, max=80,
     )
     jenis_kelamin = models.StringField(
         label='Jenis Kelamin',

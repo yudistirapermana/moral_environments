@@ -19,7 +19,9 @@ class ambiguity_task_example(Page):
 
 class company_task_example(Page):
     def vars_for_template(self):
-        treatment = self.session.config.get('treatment', 'by_return')
+        treatment = self.participant.vars.get(
+            'treatment', self.session.config.get('treatment', 'by_return')
+        )
         return dict(treatment=treatment)
 
 

@@ -117,6 +117,7 @@ class get_payment(Page):
             company_payoff=self.player.company_payoff,
             total_token=self.player.total_token,
             participation_fee=participation_fee,
+            total_payment=self.player.total_token + participation_fee,
         )
 
 
@@ -136,6 +137,7 @@ class result(Page):
             company_payoff=self.player.company_payoff,
             total_token=self.player.total_token,
             participation_fee=participation_fee,
+            total_payment=self.player.total_token + participation_fee,
         )
 
 

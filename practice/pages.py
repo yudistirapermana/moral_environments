@@ -159,11 +159,25 @@ class company_game(Page):
     form_model = 'player'
     form_fields = ['comp_prospek_terpilih', 'comp_kontribusi_persen']
 
+    def _kontribusi_max_persen(self):
+        rd = Constants.company_data
+        treatment = self.participant.vars.get(
+            'treatment', self.session.config.get('treatment', 'by_return')
+        )
+        if treatment == 'by_return':
+            return 100
+        # By capitalisation: kontribusi dibatasi agar tidak melebihi sisa modal
+        # (cc_inv), supaya hasil akhir tidak pernah negatif.
+        return int(rd['cc_inv'] / rd['capital'] * 100)
+
     def error_message(self, values):
         if not values.get('comp_prospek_terpilih'):
             return "Silakan pilih salah satu prospek investasi."
         if values.get('comp_kontribusi_persen') is None:
             return "Silakan masukkan persentase kontribusi (0-100)."
+        max_persen = self._kontribusi_max_persen()
+        if values['comp_kontribusi_persen'] > max_persen:
+            return f"Kontribusi maksimal untuk ronde ini adalah {max_persen}%."
 
     def vars_for_template(self):
         rd = Constants.company_data
@@ -204,10 +218,17 @@ class company_game(Page):
 
         damage_value = rd['damage_multiplier'] * rd['investasi']
 
+        kontribusi_max_persen = self._kontribusi_max_persen()
+
         if treatment == 'by_return':
             kontribusi_text = "dari nilai return yang diperoleh jika tidak terjadi kerusakan lingkungan"
+            kontribusi_cap_note = None
         else:
             kontribusi_text = "dari nilai kapitalisasi perusahaan Anda, terlepas dari ada atau tidaknya kerusakan lingkungan"
+            kontribusi_cap_note = (
+                f"Kontribusi dibatasi maksimal {kontribusi_max_persen}% pada ronde ini, "
+                f"agar kontribusi yang dikurangkan dari hasil akhir Anda tidak melebihi sisa modal perusahaan."
+            )
 
         return dict(
             round_type=rd['round_type'],
@@ -231,6 +252,8 @@ class company_game(Page):
             b_chart_json=json.dumps(b_chart),
             treatment=treatment,
             kontribusi_text=kontribusi_text,
+            kontribusi_max_persen=kontribusi_max_persen,
+            kontribusi_cap_note=kontribusi_cap_note,
         )
 
     def before_next_page(self):
@@ -266,24 +289,20 @@ class company_game(Page):
         cc_inv = rd['cc_inv']
         if self.player.comp_bencana_terjadi:
             self.player.comp_return_token = 0
-            self.player.comp_hasil_token = cc_inv
-            if treatment == 'by_return':
-                self.player.comp_kontribusi_token = 0
-            else:
-                self.player.comp_kontribusi_token = int(
-                    self.player.comp_kontribusi_persen / 100 * rd['capital']
-                )
+
+        # Kontribusi dihitung dari return (by_return) atau dari kapitalisasi
+        # (by_capitalisation, terlepas dari ada/tidaknya bencana), dan selalu
+        # mengurangi hasil akhir.
+        if treatment == 'by_return':
+            self.player.comp_kontribusi_token = int(
+                self.player.comp_kontribusi_persen / 100 * self.player.comp_return_token
+            )
         else:
-            if treatment == 'by_return':
-                self.player.comp_kontribusi_token = int(
-                    self.player.comp_kontribusi_persen / 100 * self.player.comp_return_token
-                )
-                self.player.comp_hasil_token = cc_inv + self.player.comp_return_token - self.player.comp_kontribusi_token
-            else:
-                self.player.comp_kontribusi_token = int(
-                    self.player.comp_kontribusi_persen / 100 * rd['capital']
-                )
-                self.player.comp_hasil_token = cc_inv + self.player.comp_return_token
+            self.player.comp_kontribusi_token = int(
+                self.player.comp_kontribusi_persen / 100 * rd['capital']
+            )
+
+        self.player.comp_hasil_token = cc_inv + self.player.comp_return_token - self.player.comp_kontribusi_token
 
 
 class company_result(Page):

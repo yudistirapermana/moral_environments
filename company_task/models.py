@@ -5,7 +5,9 @@ doc = """
 Company Task - Moral Environment
 20 ronde: 10 Risk (prob diketahui) + 10 Ambiguity (prob minimal)
 Treatment: By Return atau By Capitalisation (ditentukan di session config)
-hasil_token = cc_inv + return_token (no disaster) atau cc_inv saja (disaster)
+hasil_token = cc_inv + return_token - kontribusi_token
+kontribusi_token dihitung dari return (by_return) atau kapitalisasi (by_capitalisation),
+dan selalu mengurangi hasil akhir
 """
 
 

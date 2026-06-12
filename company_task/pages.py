@@ -7,11 +7,25 @@ class game(Page):
     form_model = 'player'
     form_fields = ['prospek_terpilih', 'kontribusi_persen']
 
+    def _kontribusi_max_persen(self):
+        rd = Constants.rounds_data[self.round_number - 1]
+        treatment = self.participant.vars.get(
+            'treatment', self.session.config.get('treatment', 'by_return')
+        )
+        if treatment == 'by_return':
+            return 100
+        # By capitalisation: kontribusi dibatasi agar tidak melebihi sisa modal
+        # (cc_inv), supaya hasil akhir tidak pernah negatif.
+        return int(rd['cc_inv'] / rd['capital'] * 100)
+
     def error_message(self, values):
         if not values.get('prospek_terpilih'):
             return "Silakan pilih salah satu prospek investasi."
         if values.get('kontribusi_persen') is None:
             return "Silakan masukkan persentase kontribusi (0-100)."
+        max_persen = self._kontribusi_max_persen()
+        if values['kontribusi_persen'] > max_persen:
+            return f"Kontribusi maksimal untuk ronde ini adalah {max_persen}%."
 
     def vars_for_template(self):
         rd = Constants.rounds_data[self.round_number - 1]
@@ -64,10 +78,17 @@ class game(Page):
 
         damage_value = rd['damage_multiplier'] * rd['investasi']
 
+        kontribusi_max_persen = self._kontribusi_max_persen()
+
         if treatment == 'by_return':
             kontribusi_text = "dari nilai return yang diperoleh jika tidak terjadi kerusakan lingkungan"
+            kontribusi_cap_note = None
         else:
             kontribusi_text = "dari nilai kapitalisasi perusahaan Anda, terlepas dari ada atau tidaknya kerusakan lingkungan"
+            kontribusi_cap_note = (
+                f"Kontribusi dibatasi maksimal {kontribusi_max_persen}% pada ronde ini, "
+                f"agar kontribusi yang dikurangkan dari hasil akhir Anda tidak melebihi sisa modal perusahaan."
+            )
 
         min_prob_a1_pct = int(rd['prob_a1'] * 100)
         min_prob_b1_pct = int(rd['prob_b1'] * 100)
@@ -94,6 +115,8 @@ class game(Page):
             b_chart_json=json.dumps(b_chart) if b_chart else 'null',
             treatment=treatment,
             kontribusi_text=kontribusi_text,
+            kontribusi_max_persen=kontribusi_max_persen,
+            kontribusi_cap_note=kontribusi_cap_note,
             min_prob_a1_pct=min_prob_a1_pct,
             min_prob_b1_pct=min_prob_b1_pct,
         )
@@ -138,27 +161,20 @@ class game(Page):
         if self.player.bencana_terjadi:
             # Bencana: tidak dapat return, hanya sisa modal (cc_inv)
             self.player.return_token = 0
-            self.player.hasil_token = cc_inv
-            # by_cap: kontribusi tetap dihitung dari kapital meski bencana ("terlepas dari kerusakan")
-            if treatment == 'by_return':
-                self.player.kontribusi_token = 0
-            else:
-                self.player.kontribusi_token = int(
-                    self.player.kontribusi_persen / 100 * rd['capital']
-                )
+
+        # Kontribusi dihitung dari return (by_return) atau dari kapitalisasi
+        # (by_capitalisation, terlepas dari ada/tidaknya bencana), dan selalu
+        # mengurangi hasil akhir.
+        if treatment == 'by_return':
+            self.player.kontribusi_token = int(
+                self.player.kontribusi_persen / 100 * self.player.return_token
+            )
         else:
-            # Tidak bencana: hasil = sisa modal + return - kontribusi (jika by_return)
-            if treatment == 'by_return':
-                self.player.kontribusi_token = int(
-                    self.player.kontribusi_persen / 100 * self.player.return_token
-                )
-                self.player.hasil_token = cc_inv + self.player.return_token - self.player.kontribusi_token
-            else:
-                # By capitalisation: kontribusi dari kapitalisasi, tidak mengurangi pembayaran
-                self.player.kontribusi_token = int(
-                    self.player.kontribusi_persen / 100 * rd['capital']
-                )
-                self.player.hasil_token = cc_inv + self.player.return_token
+            self.player.kontribusi_token = int(
+                self.player.kontribusi_persen / 100 * rd['capital']
+            )
+
+        self.player.hasil_token = cc_inv + self.player.return_token - self.player.kontribusi_token
 
 
 class result(Page):
