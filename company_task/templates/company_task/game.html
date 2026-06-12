@@ -89,6 +89,14 @@
         </h5>
     </div>
 
+    {% if is_ambiguity %}
+        <div class="alert alert-secondary mb-3">
+            <i class="fa-solid fa-circle-question me-1"></i>
+            <strong>Probabilitas yang belum diketahui</strong> dapat menjadi <strong>kesuksesan</strong>
+            atau <strong>kegagalan</strong>.
+        </div>
+    {% endif %}
+
     <!-- 4. Prospek Cards (2 kolom) -->
     <div class="row g-4 mb-4">
         <!-- Prospek A -->
@@ -110,11 +118,11 @@
                                 <div class="ct-amb-bar-known" style="width: {{ min_prob_a1_pct }}%">
                                     {{ min_prob_a1_pct }}%
                                 </div>
-                                <div class="ct-amb-bar-unknown">?</div>
+                                <div class="ct-amb-bar-unknown">Belum Diketahui</div>
                             </div>
                             <div class="ct-amb-bar-label mt-2">Return {{ ret_a2 }}</div>
                             <div class="ct-amb-bar">
-                                <div class="ct-amb-bar-unknown-full">sisanya</div>
+                                <div class="ct-amb-bar-unknown-full">Probabilitas Belum Diketahui Sama Sekali</div>
                             </div>
                         </div>
                     {% endif %}
@@ -154,11 +162,11 @@
                                 <div class="ct-amb-bar-known" style="width: {{ min_prob_b1_pct }}%">
                                     {{ min_prob_b1_pct }}%
                                 </div>
-                                <div class="ct-amb-bar-unknown">?</div>
+                                <div class="ct-amb-bar-unknown">Belum Diketahui</div>
                             </div>
                             <div class="ct-amb-bar-label mt-2">Return {{ ret_b2 }}</div>
                             <div class="ct-amb-bar">
-                                <div class="ct-amb-bar-unknown-full">sisanya</div>
+                                <div class="ct-amb-bar-unknown-full">Probabilitas Belum Diketahui Sama Sekali</div>
                             </div>
                         </div>
                     {% endif %}

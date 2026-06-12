@@ -36,9 +36,9 @@ class game(Page):
 
         if is_ambiguity:
             display_prob_a1 = f"minimal {int(rd['prob_a1'] * 100)}%"
-            display_prob_a2 = "sisanya"
+            display_prob_a2 = "belum diketahui sama sekali"
             display_prob_b1 = f"minimal {int(rd['prob_b1'] * 100)}%"
-            display_prob_b2 = "sisanya"
+            display_prob_b2 = "belum diketahui sama sekali"
             display_prob_damage = f"maksimal {int(rd['prob_damage'] * 100)}%"
         else:
             display_prob_a1 = f"{int(rd['prob_a1'] * 100)}%"
