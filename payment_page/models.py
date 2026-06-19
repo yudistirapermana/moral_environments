@@ -30,3 +30,4 @@ class Player(BasePlayer):
     company_cap_payoff = models.IntegerField(blank=True)
     company_payoff = models.IntegerField(blank=True)
     total_token = models.IntegerField(blank=True)
+    total_payment = models.IntegerField(blank=True)

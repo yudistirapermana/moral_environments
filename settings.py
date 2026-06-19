@@ -1,5 +1,7 @@
 from os import environ
 
+DEBUG = environ.get('OTREE_PRODUCTION') != '1'
+
 SESSION_CONFIGS = [
     # --- Full experiment (1 link, treatment diacak otomatis seimbang) ---
     dict(
@@ -146,3 +148,11 @@ DEMO_PAGE_INTRO_HTML = """
 """
 
 SECRET_KEY = '4515626958046'
+
+ROOMS = [
+    dict(
+        name='eksperimen_moral',
+        display_name='Eksperimen Moral Environment',
+        participant_label_file='_rooms/eksperimen.txt',
+    ),
+]

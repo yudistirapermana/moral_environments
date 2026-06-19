@@ -102,6 +102,7 @@ class get_payment(Page):
             self.player.total_token = (risk_chosen.hasil_token +
                                        ambiguity_chosen.hasil_token +
                                        self.player.company_payoff)
+            self.player.total_payment = self.player.total_token + 20000
 
         participation_fee = 20000
 
