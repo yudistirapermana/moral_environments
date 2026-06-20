@@ -128,6 +128,9 @@ class game(Page):
             'treatment', self.session.config.get('treatment', 'by_return')
         )
 
+        # Simpan treatment ke field agar muncul di CSV export
+        self.player.treatment = treatment
+
         if is_ambiguity:
             prob_a1 = self.player.actual_prob_a1
             prob_a2 = self.player.actual_prob_a2
@@ -140,6 +143,12 @@ class game(Page):
             prob_b1 = rd['prob_b1']
             prob_b2 = rd['prob_b2']
             prob_damage = rd['prob_damage']
+            # Isi actual_prob_* untuk risk rounds agar tidak kosong (0) di CSV
+            self.player.actual_prob_a1 = prob_a1
+            self.player.actual_prob_a2 = prob_a2
+            self.player.actual_prob_b1 = prob_b1
+            self.player.actual_prob_b2 = prob_b2
+            self.player.actual_prob_damage = prob_damage
 
         # Tentukan return
         self.player.angka_keluar = random.randint(1, 10000)
