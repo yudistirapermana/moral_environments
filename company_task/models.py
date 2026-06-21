@@ -225,6 +225,9 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    # Treatment assignment (by_return atau by_capitalisation)
+    treatment = models.StringField(initial='')
+
     # Pilihan pemain
     prospek_terpilih = models.StringField()
     kontribusi_persen = models.IntegerField(min=0, max=100)
