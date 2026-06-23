@@ -1,6 +1,10 @@
 from os import environ
 
-DEBUG = environ.get('OTREE_PRODUCTION') != '1'
+DEBUG = False
+ADMIN_USERNAME = 'admin'
+ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')  # Use environment variable for security
+AUTH_LEVEL = environ.get('OTREE_AUTH_LEVEL')  # Options: DEMO, STUDY, or full AUTH
+
 
 SESSION_CONFIGS = [
     # --- Full experiment (1 link, treatment diacak otomatis seimbang) ---
@@ -138,10 +142,6 @@ LANGUAGE_CODE = 'en'
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
-
-ADMIN_USERNAME = 'admin'
-# for security, best to set admin password in an environment variable
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """
     Selamat datang di eksperimen kami
